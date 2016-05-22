@@ -26,11 +26,6 @@ namespace WindowsFormsApplication22_DinBenDong_
         ArrayList supplierItems = new ArrayList();
 
         SqlConnectionStringBuilder scsb;
-        String sqlCon = @"Data Source=(LocalDB)\MSSQLLocalDB;" +
-    @"AttachDbFilename=C:\Users\rugia\Desktop\Lunch.mdf;" +
-    @"Integrated Security=True;" +
-    @"MultipleActiveResultSets=True;" +
-    @"User Instance=False;";
 
         string todaySup;
 
@@ -48,25 +43,16 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void Form_main_Load(object sender, EventArgs e)
         {
-            
-
             //status bar text
             toolStripStatusLabel1.Text = string.Format("使用者:{0}({2}), 班級: {1}({3})", user_name, class_name, student_id, class_id);
 
             scsb = new SqlConnectionStringBuilder();
-            scsb.DataSource = "(LocalDB)\\MSSQLLocalDB;";
-            //scsb.InitialCatalog = "Lunch";
+            scsb.DataSource = "CR3-08";
+            scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;
-            scsb.AttachDBFilename = "C:\\Users\\rugia\\Desktop\\Lunch.mdf;";
-            scsb.MultipleActiveResultSets = true;
-            scsb.UserInstance = false;
-            //
-            Form_student f = new Form_student(scsb);     //skip to form student
-            f.ShowDialog();
-            //
+
             //See if today's supplier chosen yet
-            //sqlCon = scsb.ToString();
-            SqlConnection con = new SqlConnection(sqlCon);
+            SqlConnection con = new SqlConnection(scsb.ToString());
             con.Open();
             string strSQL = "select todaySupplier from class where class_id = @class_id";
             SqlCommand cmd = new SqlCommand(strSQL, con);
@@ -186,7 +172,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             supplierItems.Clear();
 
             //get name and price of each items of this supplier, and make button(name) and Label(price) on panel1
-            SqlConnection con = new SqlConnection(sqlCon);
+            SqlConnection con = new SqlConnection(scsb.ToString());
             con.Open();
             string strSQL = "select item_name, price from supplier_items where sup_id = @sup_id";
             SqlCommand cmd = new SqlCommand(strSQL, con);
@@ -221,7 +207,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         //button confirm supplier
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            SqlConnection con = new SqlConnection(sqlCon);
+            SqlConnection con = new SqlConnection(scsb.ToString());
             try
             {
                 if (todaySup == null)

@@ -13,7 +13,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 {
     public partial class Form1 : Form
     {
-        bool skipLogin = true;  //Skip login
+        bool skipLogin = true;  //Skip login //
 
         string loginName;
         int studentNumber;
