@@ -65,7 +65,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             f.ShowDialog();
             //
             //See if today's supplier chosen yet
-            sqlCon = scsb.ToString(); //should comment this out when not in III
+            //sqlCon = scsb.ToString(); //should comment this out when not in III
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
             string strSQL = "select todaySupplier from class where class_id = @class_id";

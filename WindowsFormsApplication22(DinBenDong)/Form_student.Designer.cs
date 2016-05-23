@@ -32,13 +32,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnAddClass = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnDeleteClass = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cbbClass
             // 
+            this.cbbClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbClass.FormattingEnabled = true;
             this.cbbClass.Location = new System.Drawing.Point(38, 47);
             this.cbbClass.Name = "cbbClass";
@@ -73,15 +75,15 @@
             this.label5.TabIndex = 6;
             this.label5.Text = "姓名";
             // 
-            // btnAdd
+            // btnAddClass
             // 
-            this.btnAdd.Location = new System.Drawing.Point(447, 48);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(148, 27);
-            this.btnAdd.TabIndex = 7;
-            this.btnAdd.Text = "新增班級";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAddClass.Location = new System.Drawing.Point(447, 48);
+            this.btnAddClass.Name = "btnAddClass";
+            this.btnAddClass.Size = new System.Drawing.Size(148, 27);
+            this.btnAddClass.TabIndex = 7;
+            this.btnAddClass.Text = "新增班級";
+            this.btnAddClass.UseVisualStyleBackColor = true;
+            this.btnAddClass.Click += new System.EventHandler(this.btnAddClass_Click);
             // 
             // btnSave
             // 
@@ -101,6 +103,16 @@
             this.panel1.Size = new System.Drawing.Size(757, 462);
             this.panel1.TabIndex = 9;
             // 
+            // btnDeleteClass
+            // 
+            this.btnDeleteClass.Location = new System.Drawing.Point(618, 48);
+            this.btnDeleteClass.Name = "btnDeleteClass";
+            this.btnDeleteClass.Size = new System.Drawing.Size(148, 27);
+            this.btnDeleteClass.TabIndex = 7;
+            this.btnDeleteClass.Text = "刪除班級";
+            this.btnDeleteClass.UseVisualStyleBackColor = true;
+            this.btnDeleteClass.Click += new System.EventHandler(this.btnDeleteClass_Click);
+            // 
             // Form_student
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -109,7 +121,8 @@
             this.ClientSize = new System.Drawing.Size(811, 644);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.btnDeleteClass);
+            this.Controls.Add(this.btnAddClass);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
@@ -130,8 +143,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnAddClass;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnDeleteClass;
     }
 }

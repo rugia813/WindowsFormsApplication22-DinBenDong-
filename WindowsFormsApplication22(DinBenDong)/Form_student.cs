@@ -38,7 +38,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void Form_student_Load(object sender, EventArgs e)
         {
-            sqlCon = scsb.ToString();
+            //sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DaStudent = new SqlDataAdapter("select * from student", con);
             DaClass = new SqlDataAdapter("select * from class", con);
@@ -81,11 +81,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
             //SqlConnection con = new SqlConnection(sqlCon);
             try
-            {
-                //DaClass = new SqlDataAdapter("select class_id from class where name = " + cbbClass.SelectedItem.ToString(), con);
-                //DataRelation relation = DsLunch.Relations.Add("Class_Student", DsLunch.Tables["class"].Columns["class_id"], DsLunch.Tables["student"].Columns["class_id"]);
-                //DaClass.Fill(DsLunch, "classSelected");
-                //DsLunch.Tables["class"].Select("where name = " + cbbClass.SelectedItem.ToString());
+            {                
                 classID = (int)DsLunch.Tables["class"].Select("name = '" + cbbClass.SelectedItem.ToString() + "'").First()["class_id"];
                 Console.WriteLine("class id = " + classID);
                 foreach (DataRow row in DsLunch.Tables["student"].Select("class_id = '" + classID + "'"))
@@ -132,7 +128,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 {
                     studentItems[tempStuId[i] - 1].name.Text = tempStuName[i];
                 }
-            }            
+            }
 
             Button btnAdd = new Button();
             btnAdd.Location = new Point(21 + (max / 10 + 1) * 260, 15);
@@ -146,47 +142,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            panel1.Controls.RemoveAt(panel1.Controls.Count-1);//remove add button
-            int panelControlsCount = panel1.Controls.Count / 2;
-            panel1.Controls.Clear();
-            studentItems.Clear();
-            /*Console.WriteLine("panelcount: " + panelControlsCount);
-            for (int i = panelControlsCount; i < panelControlsCount+10; i++)
-            {
-                int x = 21 + i / 10 * 260;
-                Console.WriteLine(x);
 
-                Label lbl = new Label();
-                lbl.Text = (i + 1).ToString();
-                lbl.Font = new Font("微軟正黑體", 10);
-                lbl.Size = new Size(25, 20);
-                lbl.Location = new Point(x, 15 + i%10 * 40);
-
-                TextBox tb = new TextBox();
-                tb.Font = new Font("微軟正黑體", 10);
-                tb.Location = new Point(x + 34, 15 + i%10 * 40);
-                tb.Size = new Size(200, 25);
-
-                panel1.Controls.Add(lbl);
-                panel1.Controls.Add(tb);
-                studentItems.Add(new studentItem(lbl, tb));                
-            }*/
-            Button btnAdd = new Button();
-            btnAdd.Location = new Point(21 + ((panelControlsCount / 10)+1) * 260, 15);
-            btnAdd.Size = new Size(110,25);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Text = "更多";
-            btnAdd.BackColor = default(Color);
-            btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += btnAdd_Click;
-            panel1.Controls.Add(btnAdd);
-            
-            buildColumns(panelControlsCount+10);
-            for (int i = 0; i < tempStuId.Count; i++)
-            {
-                studentItems[tempStuId[i] - 1].name.Text = tempStuName[i];
-            }
-            panel1.ScrollControlIntoView(btnAdd);
         }
         private void buildColumns(int numRow)
         {
@@ -232,32 +188,83 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             //DsLunch.Tables["student"].Rows.Clear();
             //DaStudent.Fill(DsLunch, "student");
+            SqlConnection con = new SqlConnection(sqlCon);
+            con.Open();
+            int i = 0;
             foreach (studentItem student in studentItems)
-            {                
-                DataRow row = DsLunch.Tables["student"].NewRow();
-                if (student.name.Text != "")
+            {
+                try
                 {
-                    row["number"] = Convert.ToInt32(student.id.Text);
-                    row["name"] = student.name.Text;
-                    row["class_id"] = classID;           
-                    DsLunch.Tables["student"].Rows.Add(row);
-                    try
+                    bool ifModified = false;
+                    foreach (int o in tempStuId)
                     {
-                        DaStudent.UpdateCommand = new SqlCommand("update student set name = @name where stu_id = @stu_id");
-                        DaStudent.DeleteCommand = new SqlCommand("delete from student where stu_id = @stu_id");
-                        DaStudent.UpdateCommand.Parameters.Add("@name", SqlDbType.NVarChar, 30, (string)row["name"]);
-                        DaStudent.UpdateCommand.Parameters.Add("@number", SqlDbType.NVarChar, 30, row["stu_id"].ToString());
-                        DaStudent.ContinueUpdateOnError = true;
-                        DaStudent.Update(DsLunch, "student");
-                    }catch(Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                        //MessageBox.Show(ex.ToString());
+                        if (student.id.Text == o.ToString())
+                        {
+                            Console.WriteLine(student.id.Text + " should be modified");
+                            ifModified = true;
+                            break;
+                        }
                     }
-                    Console.WriteLine(row["number"].ToString() + row["name"]);
-                }                
+                    if (ifModified) //if this item should be modified
+                    {
+                        if (student.name.Text != "") //update
+                        {
+                            Console.WriteLine("updating "+student.name.Text);
+                            SqlCommand cmd = new SqlCommand("update student set name = @name where number = @number and class_id = @class_id", con);
+                            cmd.Parameters.AddWithValue("@name", student.name.Text);
+                            cmd.Parameters.AddWithValue("@number", Convert.ToInt32(student.id.Text));
+                            cmd.Parameters.AddWithValue("@class_id", classID);
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            reader.Close();
+                        }
+                        else //delete
+                        {
+                            Console.WriteLine("deleting" + student.id.Text);
+                            SqlCommand cmd = new SqlCommand("delete from student where number = @number and class_id = @class_id", con);
+                            cmd.Parameters.AddWithValue("@number", Convert.ToInt32(student.id.Text));
+                            cmd.Parameters.AddWithValue("@class_id", classID);
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            reader.Close();
+
+                        }
+                    }
+                    else // should be inserted
+                    {
+                        if (student.name.Text != "")
+                        {
+                            Console.WriteLine("inserting " + student.name.Text);
+                            SqlCommand cmd = new SqlCommand("insert into student values(@name, @number, @class_id)", con);
+                            cmd.Parameters.AddWithValue("@name", student.name.Text);
+                            cmd.Parameters.AddWithValue("@number", Convert.ToInt32(student.id.Text));
+                            cmd.Parameters.AddWithValue("@class_id", classID);
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            reader.Close();
+                        }
+                    }
+                    
+                }catch(Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                
+                i++;
             }
+            con.Close();
+            DsLunch = new DataSet();
             DaStudent.Fill(DsLunch, "student");
+            DaClass.Fill(DsLunch, "class");
+        }
+
+        //Add new class
+        private void btnAddClass_Click(object sender, EventArgs e)
+        {
+            int promptValue = Prompt.ShowDialog("Test", "123");
+        }
+
+        //Delete class
+        private void btnDeleteClass_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
