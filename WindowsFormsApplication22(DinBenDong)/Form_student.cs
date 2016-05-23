@@ -33,11 +33,12 @@ namespace WindowsFormsApplication22_DinBenDong_
         public Form_student(SqlConnectionStringBuilder scsb)
         {
             InitializeComponent();
-            this.scsb = scsb;
+            this.scsb = scsb;            
         }
 
         private void Form_student_Load(object sender, EventArgs e)
         {
+            sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DaStudent = new SqlDataAdapter("select * from student", con);
             DaClass = new SqlDataAdapter("select * from class", con);
@@ -242,6 +243,10 @@ namespace WindowsFormsApplication22_DinBenDong_
                     DsLunch.Tables["student"].Rows.Add(row);
                     try
                     {
+                        DaStudent.UpdateCommand = new SqlCommand("update student set name = @name where stu_id = @stu_id");
+                        DaStudent.DeleteCommand = new SqlCommand("delete from student where stu_id = @stu_id");
+                        DaStudent.UpdateCommand.Parameters.Add("@name", SqlDbType.NVarChar, 30, (string)row["name"]);
+                        DaStudent.UpdateCommand.Parameters.Add("@number", SqlDbType.NVarChar, 30, row["stu_id"].ToString());
                         DaStudent.ContinueUpdateOnError = true;
                         DaStudent.Update(DsLunch, "student");
                     }catch(Exception ex)

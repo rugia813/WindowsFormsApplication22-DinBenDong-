@@ -54,18 +54,18 @@ namespace WindowsFormsApplication22_DinBenDong_
             toolStripStatusLabel1.Text = string.Format("使用者:{0}({2}), 班級: {1}({3})", user_name, class_name, student_id, class_id);
 
             scsb = new SqlConnectionStringBuilder();
-            scsb.DataSource = "(LocalDB)\\MSSQLLocalDB;";
-            //scsb.InitialCatalog = "Lunch";
+            scsb.DataSource = "CR3-08";
+            scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;
-            scsb.AttachDBFilename = "C:\\Users\\rugia\\Desktop\\Lunch.mdf;";
-            scsb.MultipleActiveResultSets = true;
-            scsb.UserInstance = false;
+            //scsb.AttachDBFilename = "C:\\Users\\rugia\\Desktop\\Lunch.mdf;";
+            //scsb.MultipleActiveResultSets = true;
+            //scsb.UserInstance = false;
             //
             Form_student f = new Form_student(scsb);     //skip to form student
             f.ShowDialog();
             //
             //See if today's supplier chosen yet
-            //sqlCon = scsb.ToString();
+            sqlCon = scsb.ToString(); //should comment this out when not in III
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
             string strSQL = "select todaySupplier from class where class_id = @class_id";
