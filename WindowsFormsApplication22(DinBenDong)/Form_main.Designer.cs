@@ -61,6 +61,7 @@
             this.btnEditSup.TabIndex = 0;
             this.btnEditSup.Text = "編輯廠商資料";
             this.btnEditSup.UseVisualStyleBackColor = true;
+            this.btnEditSup.Click += new System.EventHandler(this.btnEditSup_Click);
             // 
             // btnSubmit
             // 

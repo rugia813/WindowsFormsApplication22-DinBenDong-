@@ -61,11 +61,11 @@ namespace WindowsFormsApplication22_DinBenDong_
             //scsb.MultipleActiveResultSets = true;
             //scsb.UserInstance = false;
             //
-            Form_student f = new Form_student(scsb);     //skip to form student
+            Form_supplier f = new Form_supplier(scsb);     //skip to form supllier
             f.ShowDialog();
             //
             //See if today's supplier chosen yet
-            //sqlCon = scsb.ToString(); //should comment this out when not in III
+            sqlCon = scsb.ToString(); //should comment this out when not in III
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
             string strSQL = "select todaySupplier from class where class_id = @class_id";
@@ -254,13 +254,6 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
         }
 
-        //button edit students
-        private void btnEditStu_Click(object sender, EventArgs e)
-        {
-            Form_student formStu = new Form_student(scsb);
-            formStu.ShowDialog();
-        }
-
         private void btnLogout_Click(object sender, EventArgs e)
         {
             //log out, kill this form and show form1
@@ -352,6 +345,18 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
         }
 
-        
+        //open supplier edit page
+        private void btnEditSup_Click(object sender, EventArgs e)
+        {
+            Form_supplier formSup = new Form_supplier(scsb);
+            formSup.ShowDialog();
+        }
+
+        //button edit students
+        private void btnEditStu_Click(object sender, EventArgs e)
+        {
+            Form_student formStu = new Form_student(scsb);
+            formStu.ShowDialog();
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void Form_student_Load(object sender, EventArgs e)
         {
-            //sqlCon = scsb.ToString();
+            sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DaStudent = new SqlDataAdapter("select * from student", con);
             DaClass = new SqlDataAdapter("select * from class", con);
@@ -83,12 +83,12 @@ namespace WindowsFormsApplication22_DinBenDong_
             try
             {                
                 classID = (int)DsLunch.Tables["class"].Select("name = '" + cbbClass.SelectedItem.ToString() + "'").First()["class_id"];
-                Console.WriteLine("class id = " + classID);
+                //Console.WriteLine("class id = " + classID);
                 foreach (DataRow row in DsLunch.Tables["student"].Select("class_id = '" + classID + "'"))
                 {
                     tempStuId.Add((int)row["number"]);
                     tempStuName.Add((string)row["name"]);
-                    Console.WriteLine((int)row["number"] + " " + (string)row["name"]);
+                    //Console.WriteLine((int)row["number"] + " " + (string)row["name"]);
                 }
 
             }catch(Exception ex)
@@ -142,7 +142,39 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            List<int> tempId = new List<int>();
+            List<string> tempName = new List<string>();
 
+            foreach (studentItem student in studentItems)
+            {
+                if (student.name.Text != "")
+                {
+                    tempId.Add(Convert.ToInt32(student.id.Text));
+                    tempName.Add(student.name.Text);
+                }                
+            }
+
+            panel1.Controls.RemoveAt(panel1.Controls.Count - 1);//remove add button
+            int panelControlsCount = panel1.Controls.Count / 2;//how many buttons
+            panel1.Controls.Clear();
+            studentItems.Clear();
+
+            Button btnAdd = new Button();
+            btnAdd.Location = new Point(21 + ((panelControlsCount / 10) + 1) * 260, 15);
+            btnAdd.Size = new Size(110, 25);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Text = "更多";
+            btnAdd.BackColor = default(Color);
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            panel1.Controls.Add(btnAdd);
+
+            buildColumns(panelControlsCount + 10);
+            for (int i = 0; i < tempId.Count; i++)
+            {
+                studentItems[tempId[i] - 1].name.Text = tempName[i];
+            }
+            panel1.ScrollControlIntoView(btnAdd);//pan to add button
         }
         private void buildColumns(int numRow)
         {
@@ -253,18 +285,66 @@ namespace WindowsFormsApplication22_DinBenDong_
             DsLunch = new DataSet();
             DaStudent.Fill(DsLunch, "student");
             DaClass.Fill(DsLunch, "class");
+
+            MessageBox.Show(this, "已儲存變更", "儲存");
         }
 
         //Add new class
         private void btnAddClass_Click(object sender, EventArgs e)
         {
-            int promptValue = Prompt.ShowDialog("Test", "123");
+            string promptValue = Prompt.ShowDialog("請輸入新班級的名稱:", "建立新班級");
+            if (promptValue != "")
+            {
+                try {
+                    SqlConnection con = new SqlConnection(sqlCon);
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("insert into class(name) values(@name)", con);
+                    cmd.Parameters.AddWithValue("@name", promptValue);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    reader.Close();
+                    con.Close();
+
+                    DsLunch.Tables["class"].Clear();
+                    DaClass.Fill(DsLunch, "class");
+                    cbbClass.Items.Clear();
+                    foreach (DataRow row in DsLunch.Tables["class"].Rows)
+                    {
+                        cbbClass.Items.Add(row["name"]);
+                    }
+                    cbbClass.SelectedIndex = cbbClass.Items.Count-1;
+                }catch(Exception ex)
+                {
+                    MessageBox.Show(this,"班級名稱不可重複", "錯誤");
+                }
+            }           
         }
 
         //Delete class
         private void btnDeleteClass_Click(object sender, EventArgs e)
         {
+            string className = cbbClass.SelectedItem.ToString();
+            DialogResult dr = MessageBox.Show("是否要刪除班級: " + className + "?", "確認刪除", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dr == DialogResult.Yes)
+            {
+                SqlConnection con = new SqlConnection(sqlCon);
+                con.Open();
+                SqlCommand cmd = new SqlCommand("delete from class where name = @name", con);
+                cmd.Parameters.AddWithValue("@name", className);
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Close();
+                con.Close();
 
+                DsLunch.Tables["class"].Clear();
+                DaClass.Fill(DsLunch, "class");
+                cbbClass.Items.Clear();
+                foreach (DataRow row in DsLunch.Tables["class"].Rows)
+                {
+                    cbbClass.Items.Add(row["name"]);
+                }
+                cbbClass.SelectedIndex = 0;
+
+                MessageBox.Show("已刪除班級: " + className, "成功");
+            }            
         }
     }
 }
