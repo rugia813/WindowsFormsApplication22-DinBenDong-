@@ -45,11 +45,13 @@
             // 
             // cbbSuppliers
             // 
+            this.cbbSuppliers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbSuppliers.FormattingEnabled = true;
             this.cbbSuppliers.Location = new System.Drawing.Point(30, 42);
             this.cbbSuppliers.Name = "cbbSuppliers";
             this.cbbSuppliers.Size = new System.Drawing.Size(357, 28);
             this.cbbSuppliers.TabIndex = 0;
+            this.cbbSuppliers.SelectedIndexChanged += new System.EventHandler(this.cbbSuppliers_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -68,6 +70,7 @@
             this.btnAddSup.TabIndex = 2;
             this.btnAddSup.Text = "新增廠商";
             this.btnAddSup.UseVisualStyleBackColor = true;
+            this.btnAddSup.Click += new System.EventHandler(this.btnAddSup_Click);
             // 
             // textBox1
             // 
@@ -86,7 +89,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(50, 134);
+            this.label2.Location = new System.Drawing.Point(95, 134);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 20);
             this.label2.TabIndex = 5;
@@ -95,7 +98,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(301, 134);
+            this.label3.Location = new System.Drawing.Point(346, 134);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 20);
             this.label3.TabIndex = 5;
@@ -103,7 +106,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(430, 511);
+            this.btnSave.Location = new System.Drawing.Point(173, 566);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(214, 39);
             this.btnSave.TabIndex = 6;
@@ -113,12 +116,13 @@
             // 
             // btnDeleteSup
             // 
-            this.btnDeleteSup.Location = new System.Drawing.Point(534, 42);
+            this.btnDeleteSup.Location = new System.Drawing.Point(406, 85);
             this.btnDeleteSup.Name = "btnDeleteSup";
             this.btnDeleteSup.Size = new System.Drawing.Size(111, 28);
             this.btnDeleteSup.TabIndex = 2;
             this.btnDeleteSup.Text = "刪除廠商";
             this.btnDeleteSup.UseVisualStyleBackColor = true;
+            this.btnDeleteSup.Click += new System.EventHandler(this.btnDeleteSup_Click);
             // 
             // label4
             // 
@@ -138,9 +142,10 @@
             // 
             // panel1
             // 
+            this.panel1.AutoScroll = true;
             this.panel1.Controls.Add(this.textBox2);
             this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Location = new System.Drawing.Point(30, 157);
+            this.panel1.Location = new System.Drawing.Point(77, 157);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(394, 393);
             this.panel1.TabIndex = 9;
@@ -150,7 +155,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OliveDrab;
-            this.ClientSize = new System.Drawing.Size(658, 578);
+            this.ClientSize = new System.Drawing.Size(554, 630);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tbTel);
             this.Controls.Add(this.label3);

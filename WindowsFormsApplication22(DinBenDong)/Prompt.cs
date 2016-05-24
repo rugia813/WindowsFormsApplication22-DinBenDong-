@@ -17,6 +17,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             prompt.Height = 160;
             prompt.Text = caption;
             Label textLabel = new Label() { Left = 20, Top = 10, Text = text };
+            textLabel.Size = new System.Drawing.Size(160, 25);
             TextBox inputBox = new TextBox() { Left = 20, Top = 35, Width = 200 };
             inputBox.Font = new System.Drawing.Font("微軟正黑體", 16);
             Button confirmation = new Button() { Text = "Ok", Left = 20, Width = 80, Top = 80 };

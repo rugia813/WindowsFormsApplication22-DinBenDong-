@@ -96,7 +96,7 @@
             this.cbbChooseSup.FormattingEnabled = true;
             this.cbbChooseSup.Location = new System.Drawing.Point(28, 33);
             this.cbbChooseSup.Name = "cbbChooseSup";
-            this.cbbChooseSup.Size = new System.Drawing.Size(121, 28);
+            this.cbbChooseSup.Size = new System.Drawing.Size(194, 28);
             this.cbbChooseSup.TabIndex = 1;
             this.cbbChooseSup.SelectedIndexChanged += new System.EventHandler(this.cbbChooseSup_SelectedIndexChanged);
             // 
@@ -146,7 +146,7 @@
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(175, 33);
+            this.btnConfirm.Location = new System.Drawing.Point(242, 32);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(101, 28);
             this.btnConfirm.TabIndex = 5;
