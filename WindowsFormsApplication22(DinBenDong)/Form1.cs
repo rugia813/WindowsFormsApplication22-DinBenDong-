@@ -13,7 +13,13 @@ namespace WindowsFormsApplication22_DinBenDong_
 {
     public partial class Form1 : Form
     {
-        bool skipLogin = true;  //Skip login
+        bool skipLogin = false;  //Skip login
+
+        String sqlCon = @"Data Source=(LocalDB)\MSSQLLocalDB;" +
+    @"AttachDbFilename=C:\Users\rugia\Desktop\Lunch.mdf;" +
+    @"Integrated Security=True;" +
+    @"MultipleActiveResultSets=True;" +
+    @"User Instance=False;";
 
         string loginName;
         int studentNumber;
@@ -35,16 +41,18 @@ namespace WindowsFormsApplication22_DinBenDong_
                 loginName = "Jay Li";
                 class_name = "AppDev 98";
 
-                Form_main form = new Form_main(this, loginName, 1,class_name, 1, true);
+                Form_main form = new Form_main(this, 1, loginName, 1,class_name, 1, true);
                 form.ShowDialog();
             }
+
+            //sqlCon = scsb.ToString();
 
             scsb = new SqlConnectionStringBuilder();
             scsb.DataSource = "CR3-08";
             scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;
 
-            SqlConnection con = new SqlConnection(scsb.ToString());
+            SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
             SqlCommand cmd = new SqlCommand("select * from class", con);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -81,14 +89,15 @@ namespace WindowsFormsApplication22_DinBenDong_
                 MessageBox.Show("Choose a name"); return;
             }
             loginName = studentItems[cbbName.SelectedIndex].name;
-            studentNumber = studentItems[cbbName.SelectedIndex].id;
+            studentNumber = studentItems[cbbName.SelectedIndex].number;
             class_name = classItems[cbbClass.SelectedIndex].name;
+            int id = studentItems[cbbName.SelectedIndex].id;
             int class_id = classItems[cbbClass.SelectedIndex].id;
             Boolean ifOnDuty = false;
             if (ckb_onDuty.Checked) ifOnDuty = true;
 
-            MessageBox.Show(string.Format("姓名:{0}, 座號: {1}, 班級: {2}", loginName, studentNumber, class_name), "登入成功", MessageBoxButtons.OK, MessageBoxIcon.None);
-            Form_main form = new Form_main(this, loginName, studentNumber, class_name, class_id, ifOnDuty);
+            MessageBox.Show(string.Format("ID: {3}, 姓名: {0}, 座號: {1}, 班級: {2}", loginName, studentNumber, class_name, id), "登入成功", MessageBoxButtons.OK, MessageBoxIcon.None);
+            Form_main form = new Form_main(this, id, loginName, studentNumber, class_name, class_id, ifOnDuty);
 
             //hide form1 and show form_main
             form.Show();
@@ -98,20 +107,21 @@ namespace WindowsFormsApplication22_DinBenDong_
         //Change class selection
         private void cbbClass_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlConnection con = new SqlConnection(scsb.ToString());
+            SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
             SqlCommand cmd = new SqlCommand("select * from student where class_id = @id", con);
             cmd.Parameters.AddWithValue("@id", classItems[cbbClass.SelectedIndex].id);
             SqlDataReader reader = cmd.ExecuteReader();
 
             cbbName.Items.Clear();
+            studentItems.Clear();
 
             try
             {
                 while (reader.Read())
                 {
-                    cbbName.Items.Add(reader["name"]);
-                    studentItems.Add(new student_item((int)reader["stu_id"], (string)reader["name"]));
+                    cbbName.Items.Add((string)reader["name"] + " (" + reader["number"] + ")");
+                    studentItems.Add(new student_item((int)reader["stu_id"], (string)reader["name"], (int)reader["number"]));
                 }
                 reader.Close();
                 con.Close();
@@ -144,10 +154,12 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             public int id;
             public string name;
-            public student_item(int id, string name)
+            public int number;
+            public student_item(int id, string name, int number)
             {
                 this.id = id;
                 this.name = name;
+                this.number = number;
             }
         }
 

@@ -32,7 +32,6 @@
             this.btnEditSup = new System.Windows.Forms.Button();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.btnClassOrderDetails = new System.Windows.Forms.Button();
             this.cbbChooseSup = new System.Windows.Forms.ComboBox();
             this.lblChooseSup = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -40,12 +39,20 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnConfirm = new System.Windows.Forms.Button();
+            this.lblTodaySup = new System.Windows.Forms.Label();
+            this.pnSetting = new System.Windows.Forms.Panel();
+            this.btnSetting = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.pnSetting.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnEditStu
             // 
-            this.btnEditStu.Location = new System.Drawing.Point(466, 81);
+            this.btnEditStu.Location = new System.Drawing.Point(7, 27);
             this.btnEditStu.Name = "btnEditStu";
             this.btnEditStu.Size = new System.Drawing.Size(168, 40);
             this.btnEditStu.TabIndex = 0;
@@ -55,17 +62,17 @@
             // 
             // btnEditSup
             // 
-            this.btnEditSup.Location = new System.Drawing.Point(466, 145);
+            this.btnEditSup.Location = new System.Drawing.Point(7, 91);
             this.btnEditSup.Name = "btnEditSup";
             this.btnEditSup.Size = new System.Drawing.Size(168, 40);
             this.btnEditSup.TabIndex = 0;
-            this.btnEditSup.Text = "編輯廠商資料";
+            this.btnEditSup.Text = "編輯廠商/菜單資料";
             this.btnEditSup.UseVisualStyleBackColor = true;
             this.btnEditSup.Click += new System.EventHandler(this.btnEditSup_Click);
             // 
             // btnSubmit
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(147, 472);
+            this.btnSubmit.Location = new System.Drawing.Point(147, 518);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(168, 40);
             this.btnSubmit.TabIndex = 0;
@@ -79,17 +86,8 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(168, 40);
             this.button4.TabIndex = 0;
-            this.button4.Text = "個人訂購明細";
+            this.button4.Text = "全班訂購明細";
             this.button4.UseVisualStyleBackColor = true;
-            // 
-            // btnClassOrderDetails
-            // 
-            this.btnClassOrderDetails.Location = new System.Drawing.Point(466, 359);
-            this.btnClassOrderDetails.Name = "btnClassOrderDetails";
-            this.btnClassOrderDetails.Size = new System.Drawing.Size(168, 40);
-            this.btnClassOrderDetails.TabIndex = 0;
-            this.btnClassOrderDetails.Text = "訂購明細";
-            this.btnClassOrderDetails.UseVisualStyleBackColor = true;
             // 
             // cbbChooseSup
             // 
@@ -112,9 +110,11 @@
             // panel1
             // 
             this.panel1.AutoScroll = true;
-            this.panel1.Location = new System.Drawing.Point(27, 78);
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Location = new System.Drawing.Point(27, 97);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(417, 370);
+            this.panel1.Size = new System.Drawing.Size(417, 377);
             this.panel1.TabIndex = 3;
             // 
             // btnLogout
@@ -154,23 +154,84 @@
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
+            // lblTodaySup
+            // 
+            this.lblTodaySup.Location = new System.Drawing.Point(39, 68);
+            this.lblTodaySup.Name = "lblTodaySup";
+            this.lblTodaySup.Size = new System.Drawing.Size(344, 27);
+            this.lblTodaySup.TabIndex = 0;
+            this.lblTodaySup.Text = "今天的供應商: ";
+            this.lblTodaySup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTodaySup.Visible = false;
+            // 
+            // pnSetting
+            // 
+            this.pnSetting.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.pnSetting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnSetting.Controls.Add(this.btnEditSup);
+            this.pnSetting.Controls.Add(this.btnEditStu);
+            this.pnSetting.Location = new System.Drawing.Point(459, 54);
+            this.pnSetting.Name = "pnSetting";
+            this.pnSetting.Size = new System.Drawing.Size(183, 165);
+            this.pnSetting.TabIndex = 6;
+            this.pnSetting.Visible = false;
+            // 
+            // btnSetting
+            // 
+            this.btnSetting.Location = new System.Drawing.Point(563, 22);
+            this.btnSetting.Name = "btnSetting";
+            this.btnSetting.Size = new System.Drawing.Size(79, 33);
+            this.btnSetting.TabIndex = 7;
+            this.btnSetting.Text = "設置";
+            this.btnSetting.UseVisualStyleBackColor = true;
+            this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(103, 100);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 20);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "品名";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(241, 99);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 20);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "價格";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(298, 1);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(41, 20);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "數量";
+            // 
             // Form_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OliveDrab;
             this.ClientSize = new System.Drawing.Size(657, 589);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnSetting);
+            this.Controls.Add(this.pnSetting);
+            this.Controls.Add(this.lblTodaySup);
             this.Controls.Add(this.btnConfirm);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblChooseSup);
             this.Controls.Add(this.cbbChooseSup);
-            this.Controls.Add(this.btnClassOrderDetails);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnSubmit);
-            this.Controls.Add(this.btnEditSup);
-            this.Controls.Add(this.btnEditStu);
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form_main";
@@ -178,8 +239,11 @@
             this.Text = "訂便當系統";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_main_FormClosed);
             this.Load += new System.EventHandler(this.Form_main_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.pnSetting.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,7 +255,6 @@
         private System.Windows.Forms.Button btnEditSup;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button btnClassOrderDetails;
         private System.Windows.Forms.ComboBox cbbChooseSup;
         private System.Windows.Forms.Label lblChooseSup;
         private System.Windows.Forms.Panel panel1;
@@ -199,5 +262,11 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Label lblTodaySup;
+        private System.Windows.Forms.Panel pnSetting;
+        private System.Windows.Forms.Button btnSetting;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
