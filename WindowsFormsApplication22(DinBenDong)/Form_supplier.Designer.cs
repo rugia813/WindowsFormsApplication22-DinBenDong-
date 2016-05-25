@@ -40,6 +40,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tbTel = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.coverUpNumBtn = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,12 +151,20 @@
             this.panel1.Size = new System.Drawing.Size(394, 393);
             this.panel1.TabIndex = 9;
             // 
+            // coverUpNumBtn
+            // 
+            this.coverUpNumBtn.Location = new System.Drawing.Point(384, 144);
+            this.coverUpNumBtn.Name = "coverUpNumBtn";
+            this.coverUpNumBtn.Size = new System.Drawing.Size(22, 419);
+            this.coverUpNumBtn.TabIndex = 10;
+            // 
             // Form_supplier
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OliveDrab;
             this.ClientSize = new System.Drawing.Size(554, 630);
+            this.Controls.Add(this.coverUpNumBtn);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tbTel);
             this.Controls.Add(this.label3);
@@ -192,5 +201,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbTel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label coverUpNumBtn;
     }
 }

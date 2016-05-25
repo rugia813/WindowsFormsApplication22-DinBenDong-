@@ -37,7 +37,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void Form_supplier_Load(object sender, EventArgs e)
         {
-            //sqlCon = scsb.ToString();
+            sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DasupItem = new SqlDataAdapter("select * from supplier_items", con);
             DaSupplier = new SqlDataAdapter("select * from supplier", con);
@@ -228,7 +228,9 @@ namespace WindowsFormsApplication22_DinBenDong_
                 name.Size = new Size(227, 29);
                 name.Location = new Point(x, 14 + i * 40);
 
-                TextBox price = new TextBox();
+                NumericUpDown price = new NumericUpDown();
+                price.Controls[0].Hide();
+                price.Maximum = 1000;
                 price.Font = new Font("微軟正黑體", 10);
                 price.Location = new Point(x + 251, 14 + i * 40);
                 price.Size = new Size(54, 29);
@@ -241,8 +243,8 @@ namespace WindowsFormsApplication22_DinBenDong_
         class supplierItem
         {
             public TextBox name { get; set; }
-            public TextBox price { get; set; }
-            public supplierItem(TextBox name, TextBox price)
+            public NumericUpDown price { get; set; }
+            public supplierItem(TextBox name, NumericUpDown price)
             {
                 this.price = price;
                 this.name = name;
@@ -321,28 +323,37 @@ namespace WindowsFormsApplication22_DinBenDong_
         //delete supplier
         private void btnDeleteSup_Click(object sender, EventArgs e)
         {
-            string className = cbbSuppliers.SelectedItem.ToString();
-            DialogResult dr = MessageBox.Show("是否要刪除廠商: " + className + "?", "確認刪除", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (dr == DialogResult.Yes)
-            {
-                SqlConnection con = new SqlConnection(sqlCon);
-                con.Open();
-                SqlCommand cmd = new SqlCommand("delete from supplier where name = @name", con);
-                cmd.Parameters.AddWithValue("@name", className);
-                SqlDataReader reader = cmd.ExecuteReader();
-                reader.Close();
-                con.Close();
-
-                DsSupplier.Tables["supplier"].Clear();
-                DaSupplier.Fill(DsSupplier, "supplier");
-                cbbSuppliers.Items.Clear();
-                foreach (DataRow row in DsSupplier.Tables["supplier"].Rows)
+            try {
+                string supplierName = cbbSuppliers.SelectedItem.ToString();
+                DialogResult dr = MessageBox.Show("是否要刪除廠商: " + supplierName + "?", "確認刪除", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dr == DialogResult.Yes)
                 {
-                    cbbSuppliers.Items.Add(row["name"]);
-                }
-                cbbSuppliers.SelectedIndex = 0;
+                    SqlConnection con = new SqlConnection(sqlCon);
+                    con.Open();
 
-                MessageBox.Show("已刪除廠商: " + className, "成功");
+                    SqlCommand cmd = new SqlCommand("delete from supplier_items where sup_id = @sup_id", con);
+                    cmd.Parameters.AddWithValue("@sup_id", SupplierID);
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand("delete from supplier where name = @name", con);
+                    cmd.Parameters.AddWithValue("@name", supplierName);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+
+                    DsSupplier.Tables["supplier"].Clear();
+                    DaSupplier.Fill(DsSupplier, "supplier");
+                    cbbSuppliers.Items.Clear();
+                    foreach (DataRow row in DsSupplier.Tables["supplier"].Rows)
+                    {
+                        cbbSuppliers.Items.Add(row["name"]);
+                    }
+                    cbbSuppliers.SelectedIndex = 0;
+
+                    MessageBox.Show("已刪除廠商: " + supplierName, "成功");
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
     }

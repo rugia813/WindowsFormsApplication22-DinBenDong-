@@ -34,6 +34,8 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         string todaySup;
 
+        bool ifOrdered; 
+
         public Form_main(Form1 f, string loginName, int stu_id, string className, int class_id, bool ifod)
         {
             InitializeComponent();
@@ -56,16 +58,10 @@ namespace WindowsFormsApplication22_DinBenDong_
             scsb = new SqlConnectionStringBuilder();
             scsb.DataSource = "CR3-08";
             scsb.InitialCatalog = "Lunch";
-            scsb.IntegratedSecurity = true;
-            //scsb.AttachDBFilename = "C:\\Users\\rugia\\Desktop\\Lunch.mdf;";
-            //scsb.MultipleActiveResultSets = true;
-            //scsb.UserInstance = false;
-            //
-            Form_supplier f = new Form_supplier(scsb);     //skip to form supllier
-            f.ShowDialog();
-            //
-            //See if today's supplier chosen yet
-            //sqlCon = scsb.ToString(); //should comment this out when not in III
+            scsb.IntegratedSecurity = true;            
+            
+            
+            sqlCon = scsb.ToString(); //should comment this out when not in III
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
             string strSQL = "select todaySupplier from class where class_id = @class_id";
@@ -73,20 +69,17 @@ namespace WindowsFormsApplication22_DinBenDong_
             cmd.Parameters.AddWithValue("@class_id", class_id);
             SqlDataReader reader = cmd.ExecuteReader();
 
-            Console.WriteLine(1);
+            #region//See if today's supplier chosen yet
             try
             {
                 if (reader.HasRows)
                 {
                     if (reader.Read())
                     {
-                        Console.WriteLine(2);
                         var t = reader["todaySupplier"];
-                        Console.WriteLine(t);
                         if (t.GetType() == "string".GetType())
                         {
                             todaySup = (string)t;
-                            Console.WriteLine(todaySup + " today sup");
                         }
                     }
                 }
@@ -107,12 +100,19 @@ namespace WindowsFormsApplication22_DinBenDong_
                     con.Close();
                 }
             }
+            #endregion
 
-            Console.WriteLine(3);
+            strSQL = "select * from order where stu_id = @stu_id";
+            cmd = new SqlCommand(strSQL, con);
+            cmd.Parameters.AddWithValue("@stu_id", );
 
             //if today sup is chosen
             if (todaySup != null)
             {
+                if (!ifOrdered)
+                {
+
+                }
                 cbbChooseSup.Enabled = false;
                 btnConfirm.Text = "更改廠商";
                 try
@@ -216,6 +216,22 @@ namespace WindowsFormsApplication22_DinBenDong_
                 }
             }
             MessageBox.Show(output);
+
+            SqlConnection con = new SqlConnection(sqlCon);
+            con.Open();
+
+            foreach (supplier_item supItem in supplierItems)
+            {
+                if (Convert.ToInt32(supItem.tb.Text) != 0)
+                {
+                    string strSQL = "select item_name, price from supplier_items where sup_id = @sup_id";
+                    SqlCommand cmd = new SqlCommand(strSQL, con);
+                    cmd.Parameters.AddWithValue("@sup_id", cbbChooseSup.SelectedIndex + 1);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            con.Close();
         }
 
         //button confirm supplier
@@ -301,8 +317,8 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             public Button btn { get; set; }
             public Label lbl { get; set; }
-            public TextBox tb { get; set; }
-            public supplier_item(Button btn, Label lbl, TextBox tb)
+            public NumericUpDown tb { get; set; }
+            public supplier_item(Button btn, Label lbl, NumericUpDown tb)
             {
                 this.btn = btn;
                 this.lbl = lbl;
@@ -333,10 +349,10 @@ namespace WindowsFormsApplication22_DinBenDong_
                 lbl.Size = new Size(47, 29);
                 panel1.Controls.Add(lbl);
 
-                TextBox tb = new TextBox();
+                NumericUpDown tb = new NumericUpDown();
+                tb.Increment = 1;
                 tb.Location = new Point(300, 24 + i);
                 tb.Size = new Size(46, 29);
-                tb.ReadOnly = true;
                 tb.Text = "0";
                 panel1.Controls.Add(tb);
                 i += 35;
