@@ -50,7 +50,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;
 
-            sqlCon = scsb.ToString(); // comment this out when not in III
+            //sqlCon = scsb.ToString(); // comment this out when not in III
 
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
@@ -166,5 +166,10 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form_order_detail form = new Form_order_detail(sqlCon, 1);
+            form.ShowDialog(this);
+        }
     }
 }

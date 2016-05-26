@@ -74,7 +74,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;    
 
-            sqlCon = scsb.ToString(); //should comment this out when not in III
+            //sqlCon = scsb.ToString(); //should comment this out when not in III
 
             #region//See if today's supplier chosen yet
             SqlConnection con = new SqlConnection(sqlCon);
