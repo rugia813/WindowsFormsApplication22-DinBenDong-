@@ -37,7 +37,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void Form_supplier_Load(object sender, EventArgs e)
         {
-            //sqlCon = scsb.ToString();
+            sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DasupItem = new SqlDataAdapter("select * from supplier_items", con);
             DaSupplier = new SqlDataAdapter("select * from supplier", con);

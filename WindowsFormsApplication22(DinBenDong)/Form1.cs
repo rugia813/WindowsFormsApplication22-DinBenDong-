@@ -44,13 +44,13 @@ namespace WindowsFormsApplication22_DinBenDong_
                 Form_main form = new Form_main(this, 1, loginName, 1,class_name, 1, true);
                 form.ShowDialog();
             }
-
-            //sqlCon = scsb.ToString();
-
+            
             scsb = new SqlConnectionStringBuilder();
             scsb.DataSource = "CR3-08";
             scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;
+
+            sqlCon = scsb.ToString(); // comment this out when not in III
 
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
@@ -109,7 +109,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
-            SqlCommand cmd = new SqlCommand("select * from student where class_id = @id", con);
+            SqlCommand cmd = new SqlCommand("select * from student where class_id = @id order by number", con);
             cmd.Parameters.AddWithValue("@id", classItems[cbbClass.SelectedIndex].id);
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -123,8 +123,12 @@ namespace WindowsFormsApplication22_DinBenDong_
                     cbbName.Items.Add((string)reader["name"] + " (" + reader["number"] + ")");
                     studentItems.Add(new student_item((int)reader["stu_id"], (string)reader["name"], (int)reader["number"]));
                 }
-                reader.Close();
-                con.Close();
+                cbbName.Text = "";
+                cbbName.SelectedIndex = 0;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("class has no student");
             }
             finally
             {
@@ -136,8 +140,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 {
                     con.Close();
                 }
-            }
-            cbbName.SelectedIndex = 0;
+            }            
         }
 
         class class_item

@@ -38,7 +38,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void Form_student_Load(object sender, EventArgs e)
         {
-            //sqlCon = scsb.ToString();
+            sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DaStudent = new SqlDataAdapter("select * from student", con);
             DaClass = new SqlDataAdapter("select * from class", con);
