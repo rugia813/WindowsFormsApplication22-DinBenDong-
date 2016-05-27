@@ -89,6 +89,7 @@
             // 
             // cbbClass
             // 
+            this.cbbClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbClass.FormattingEnabled = true;
             this.cbbClass.Location = new System.Drawing.Point(305, 151);
             this.cbbClass.Name = "cbbClass";
@@ -98,6 +99,7 @@
             // 
             // cbbName
             // 
+            this.cbbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbName.FormattingEnabled = true;
             this.cbbName.Location = new System.Drawing.Point(305, 201);
             this.cbbName.Name = "cbbName";

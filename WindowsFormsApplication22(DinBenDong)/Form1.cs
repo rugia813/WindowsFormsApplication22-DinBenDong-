@@ -168,7 +168,7 @@ namespace WindowsFormsApplication22_DinBenDong_
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form_order_detail form = new Form_order_detail(sqlCon, 1);
+            Form_order_detail form = new Form_order_detail(sqlCon, 0);
             form.ShowDialog(this);
         }
     }

@@ -30,15 +30,15 @@ namespace WindowsFormsApplication22_DinBenDong_
         List<int> tempStuId = new List<int>();
         List<String> tempStuName = new List<string>();
 
-        public Form_student(SqlConnectionStringBuilder scsb)
+        public Form_student(String sqlCon)
         {
             InitializeComponent();
-            this.scsb = scsb;            
+            this.sqlCon = sqlCon;            
         }
 
         private void Form_student_Load(object sender, EventArgs e)
         {
-            sqlCon = scsb.ToString();
+            //sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DaStudent = new SqlDataAdapter("select * from student", con);
             DaClass = new SqlDataAdapter("select * from class", con);

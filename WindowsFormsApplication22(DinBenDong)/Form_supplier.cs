@@ -18,7 +18,7 @@ namespace WindowsFormsApplication22_DinBenDong_
     @"Integrated Security=True;" +
     @"MultipleActiveResultSets=True;" +
     @"User Instance=False;";
-        SqlConnectionStringBuilder scsb = new SqlConnectionStringBuilder();
+        //SqlConnectionStringBuilder scsb = new SqlConnectionStringBuilder();
         List<supplierItem> supplierItems = new List<supplierItem>();
 
         DataSet DsSupplier = new DataSet();
@@ -29,15 +29,14 @@ namespace WindowsFormsApplication22_DinBenDong_
         List<String> tempItemPrice = new List<String>();
         List<String> tempItemName = new List<string>();
 
-        public Form_supplier(SqlConnectionStringBuilder scsb)
+        public Form_supplier(string sqlCon)
         {
             InitializeComponent();
-            this.scsb = scsb;
+            this.sqlCon = sqlCon;
         }
 
         private void Form_supplier_Load(object sender, EventArgs e)
         {
-            sqlCon = scsb.ToString();
             SqlConnection con = new SqlConnection(sqlCon);
             DasupItem = new SqlDataAdapter("select * from supplier_items", con);
             DaSupplier = new SqlDataAdapter("select * from supplier", con);

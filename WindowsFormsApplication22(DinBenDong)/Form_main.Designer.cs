@@ -91,6 +91,7 @@
             // 
             // cbbChooseSup
             // 
+            this.cbbChooseSup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbChooseSup.FormattingEnabled = true;
             this.cbbChooseSup.Location = new System.Drawing.Point(28, 33);
             this.cbbChooseSup.Name = "cbbChooseSup";

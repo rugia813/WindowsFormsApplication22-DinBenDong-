@@ -144,6 +144,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
             else //if today sup is not chosen
             {
+                btnSubmit.Enabled = false;
                 Console.WriteLine("no sup");
                 Label lbl = new Label();
                 lbl.Location = new Point(panel1.Size.Width / 2 - 50, panel1.Height / 2 - 50);
@@ -165,7 +166,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 var result = cmd.ExecuteScalar().ToString();
                 if (result != null) todaySup = (string)result;
 
-                if (ifOnDuty)
+                if (ifOnDuty)// Is On Duty, load sup name into CBB
                 {                    
                     strSQL = "select name from supplier";
                     cmd = new SqlCommand(strSQL, con);
@@ -208,23 +209,30 @@ namespace WindowsFormsApplication22_DinBenDong_
             btnDishes.Clear();
             supplierItems.Clear();
 
-            //get name and price of each items of this supplier, and make button(name) and Label(price) on panel1
-            SqlConnection con = new SqlConnection(sqlCon);
-            con.Open();
-            string strSQL = "select item_name, price, item_id from supplier_items where sup_id = @sup_id";
-            SqlCommand cmd = new SqlCommand(strSQL, con);
-            cmd.Parameters.AddWithValue("@sup_id", cbbChooseSup.SelectedIndex + 1);
-            SqlDataReader reader = cmd.ExecuteReader();
-            //var items = new[] { new { Name = "", Price = 0 } };
-            while (reader.HasRows)
+            if (!ifOrdered)
             {
-                int i = 0;
-                buildSupplierItems(reader, i);
+                //get name and price of each items of this supplier, and make button(name) and Label(price) on panel1
+                SqlConnection con = new SqlConnection(sqlCon);
+                con.Open();
+                string strSQL = "select item_name, price, item_id from supplier_items where sup_id = @sup_id";
+                SqlCommand cmd = new SqlCommand(strSQL, con);
+                cmd.Parameters.AddWithValue("@sup_id", cbbChooseSup.SelectedIndex + 1);
+                SqlDataReader reader = cmd.ExecuteReader();
+                //var items = new[] { new { Name = "", Price = 0 } };
+                while (reader.HasRows)
+                {
+                    int i = 0;
+                    buildSupplierItems(reader, i);
 
-                reader.NextResult();
+                    reader.NextResult();
+                }
+                reader.Close();
+                con.Close();
             }
-            reader.Close();
-            con.Close();
+            else
+            {
+                showOrderDetails();
+            }            
         }
 
         //Confirm Button
@@ -326,32 +334,65 @@ namespace WindowsFormsApplication22_DinBenDong_
             try
             {
                 if (todaySup == null)//Choose Sup
-                {
-                    con.Open();
-                    string strSQL = "update class set todaySupplier = @sup_name where class_id = @class_id";
-                    SqlCommand cmd = new SqlCommand(strSQL, con);
-                    cmd.Parameters.AddWithValue("@sup_name", cbbChooseSup.SelectedItem.ToString());
-                    cmd.Parameters.AddWithValue("@class_id", class_id);
-                    cmd.ExecuteNonQuery();
+                {                    
+                    try
+                    {
+                        con.Open();
+                        string strSQL = "update class set todaySupplier = @sup_name where class_id = @class_id";
+                        SqlCommand cmd = new SqlCommand(strSQL, con);
+                        cmd.Parameters.AddWithValue("@sup_name", cbbChooseSup.SelectedItem.ToString());
+                        cmd.Parameters.AddWithValue("@class_id", class_id);
+                        cmd.ExecuteNonQuery();
 
-                    todaySup = cbbChooseSup.SelectedItem.ToString();
-                    Console.WriteLine(cbbChooseSup.SelectedItem);
-                    btnConfirm.Text = "更改廠商";
-                    cbbChooseSup.Enabled = false;
+                        todaySup = cbbChooseSup.SelectedItem.ToString();
+                        Console.WriteLine(cbbChooseSup.SelectedItem);
+                        btnConfirm.Text = "更改廠商";
+                        cbbChooseSup.Enabled = false;
+                        btnSubmit.Enabled = true;
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        MessageBox.Show("請選擇供應商", "錯誤");
+                    }
                 }
                 else//Change Sup
                 {                 
                     DialogResult dr = MessageBox.Show("是否更改供應商? 已下定訂單將被刪除", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                     if (dr == DialogResult.OK)
                     {
+                        ifOrdered = false;
                         todaySup = null;
                         btnConfirm.Text = "選擇";
                         cbbChooseSup.Enabled = true;
+                        cbbChooseSup.SelectedIndex = 0;
+                        //get name and price of each items of this supplier, and make button(name) and Label(price) on panel1
+                        panel1.Controls.Clear(); //clear existing controls
+                        btnDishes.Clear();
+                        supplierItems.Clear();
+                        btnSubmit.Text = "確認訂購";
+                        btnSubmit.Enabled = false;
+                        lblTotal.Visible = false;
+                        con = new SqlConnection(sqlCon);
+                        con.Open();
+                        string strSQL = "select item_name, price, item_id from supplier_items where sup_id = @sup_id";
+                        SqlCommand cmd = new SqlCommand(strSQL, con);
+                        cmd.Parameters.AddWithValue("@sup_id", cbbChooseSup.SelectedIndex + 1);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.HasRows)
+                        {
+                            int i = 0;
+                            buildSupplierItems(reader, i);
+
+                            reader.NextResult();
+                        }
+                        reader.Close();
+                        con.Close();
 
                         con.Open();
                         //delete order details
-                        string strSQL = "delete from order_detail where order_id in (select order_id from orders where stu_id in (select stu_id from student where class_id = @class_id))";
-                        SqlCommand cmd = new SqlCommand(strSQL, con);
+                        strSQL = "delete from order_detail where order_id in (select order_id from orders where stu_id in (select stu_id from student where class_id = @class_id))";
+                        cmd = new SqlCommand(strSQL, con);
                         cmd.Parameters.AddWithValue("@class_id", class_id);
                         cmd.ExecuteNonQuery();
 
@@ -466,14 +507,14 @@ namespace WindowsFormsApplication22_DinBenDong_
         //open supplier edit page
         private void btnEditSup_Click(object sender, EventArgs e)
         {
-            Form_supplier formSup = new Form_supplier(scsb);
+            Form_supplier formSup = new Form_supplier(sqlCon);
             formSup.ShowDialog();
         }
 
         //button edit students
         private void btnEditStu_Click(object sender, EventArgs e)
         {
-            Form_student formStu = new Form_student(scsb);
+            Form_student formStu = new Form_student(sqlCon);
             formStu.ShowDialog();
         }
 
@@ -585,67 +626,8 @@ namespace WindowsFormsApplication22_DinBenDong_
         //Class Order Detail Item
         private void btnClassOrderDetail_Click(object sender, EventArgs e)
         {
-            panel1.Controls.Clear();
-            try {
-                //get order details
-                SqlConnection con = new SqlConnection(sqlCon);
-                con.Open();
-                string strSQL = " select i.item_name,sum(od.qty) as qty, price * sum(qty) as price from order_detail od " +
- "join orders o on od.order_id = o.order_id "+
- "join supplier_items i on od.item_id = i.item_id "+
- "where o.stu_id in (select stu_id from student where class_id = @class_id) "+
- "group by i.item_name, price";
-                SqlCommand cmd = new SqlCommand(strSQL, con);
-                cmd = new SqlCommand(strSQL, con);
-                cmd.Parameters.AddWithValue("@class_id", class_id);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                int i = 0;
-                int totalPrice = 0;
-                while (reader.HasRows) //Print Order Details on Panel1
-                {
-                    while (reader.Read())
-                    {
-                        Label lblItem = new Label();
-                        lblItem.Text = (string)reader["item_name"];
-                        lblItem.Location = new Point(17, 24 + i);
-                        lblItem.AutoSize = false;
-                        lblItem.TextAlign = ContentAlignment.MiddleCenter;
-                        lblItem.Size = new Size(200, 29);
-                        panel1.Controls.Add(lblItem);
-
-                        Label lblPrice = new Label();
-                        lblPrice.Text = reader["price"].ToString();
-                        totalPrice += (int)reader["price"];
-                        lblPrice.Location = new Point(210, 24 + i);
-                        lblPrice.AutoSize = false;
-                        lblPrice.TextAlign = ContentAlignment.MiddleCenter;
-                        lblPrice.Size = new Size(47, 29);
-                        panel1.Controls.Add(lblPrice);
-
-                        Label lblQty = new Label();
-                        lblQty.Text = reader["qty"].ToString();
-                        lblQty.Location = new Point(300, 24 + i);
-                        lblQty.AutoSize = false;
-                        lblQty.TextAlign = ContentAlignment.MiddleCenter;
-                        lblQty.Size = new Size(47, 29);
-                        panel1.Controls.Add(lblQty);
-
-                        i += 35;
-                    }
-                    reader.NextResult();
-                }
-                //Total Price Label
-                lblTotal.Text = "總價:         " + totalPrice.ToString();
-                lblTotal.Visible = true;
-
-                reader.Close();
-                con.Close();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-            }            
+            Form_order_detail form = new Form_order_detail(sqlCon, class_id);
+            form.ShowDialog(this);
         }
     }
 }

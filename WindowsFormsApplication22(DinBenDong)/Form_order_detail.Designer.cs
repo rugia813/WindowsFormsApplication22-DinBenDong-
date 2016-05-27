@@ -28,14 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lblNoOrder = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lblTotal = new System.Windows.Forms.Label();
             this.lblSupplier = new System.Windows.Forms.Label();
             this.lblClass = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +53,7 @@
             this.treeView1.Font = new System.Drawing.Font("微軟正黑體", 16F);
             this.treeView1.HotTracking = true;
             this.treeView1.ItemHeight = 26;
-            this.treeView1.Location = new System.Drawing.Point(131, 63);
+            this.treeView1.Location = new System.Drawing.Point(125, 63);
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(606, 575);
             this.treeView1.TabIndex = 0;
@@ -64,17 +71,50 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.Color.YellowGreen;
+            this.tabPage1.Controls.Add(this.lblNoOrder);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.flowLayoutPanel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(848, 709);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage1.Text = "Reception";
+            // 
+            // lblNoOrder
+            // 
+            this.lblNoOrder.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.lblNoOrder.Font = new System.Drawing.Font("微軟正黑體", 16F);
+            this.lblNoOrder.Location = new System.Drawing.Point(353, 338);
+            this.lblNoOrder.Name = "lblNoOrder";
+            this.lblNoOrder.Size = new System.Drawing.Size(186, 35);
+            this.lblNoOrder.TabIndex = 1;
+            this.lblNoOrder.Text = "目前尚無訂單";
+            this.lblNoOrder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("微軟正黑體", 16F);
+            this.label1.Location = new System.Drawing.Point(132, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(186, 35);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "今日訂單:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(136, 106);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(577, 592);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.YellowGreen;
+            this.tabPage2.Controls.Add(this.btnSubmit);
             this.tabPage2.Controls.Add(this.lblTotal);
             this.tabPage2.Controls.Add(this.lblSupplier);
             this.tabPage2.Controls.Add(this.lblClass);
@@ -84,12 +124,12 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(848, 709);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Class";
             // 
             // lblTotal
             // 
             this.lblTotal.Font = new System.Drawing.Font("微軟正黑體", 16F);
-            this.lblTotal.Location = new System.Drawing.Point(127, 654);
+            this.lblTotal.Location = new System.Drawing.Point(121, 654);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(313, 39);
             this.lblTotal.TabIndex = 1;
@@ -98,7 +138,7 @@
             // 
             // lblSupplier
             // 
-            this.lblSupplier.Location = new System.Drawing.Point(424, 21);
+            this.lblSupplier.Location = new System.Drawing.Point(418, 21);
             this.lblSupplier.Name = "lblSupplier";
             this.lblSupplier.Size = new System.Drawing.Size(313, 39);
             this.lblSupplier.TabIndex = 1;
@@ -107,12 +147,27 @@
             // 
             // lblClass
             // 
-            this.lblClass.Location = new System.Drawing.Point(127, 21);
+            this.lblClass.Location = new System.Drawing.Point(121, 21);
             this.lblClass.Name = "lblClass";
             this.lblClass.Size = new System.Drawing.Size(291, 39);
             this.lblClass.TabIndex = 1;
             this.lblClass.Text = "班級: ";
             this.lblClass.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // btnSubmit
+            // 
+            this.btnSubmit.Location = new System.Drawing.Point(523, 653);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(207, 39);
+            this.btnSubmit.TabIndex = 2;
+            this.btnSubmit.Text = "訂單確認";
+            this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
             // Form_order_detail
             // 
@@ -124,9 +179,10 @@
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form_order_detail";
-            this.Text = "Form_order_detail";
+            this.Text = "訂單檢視";
             this.Load += new System.EventHandler(this.Form_order_detail_Load);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -141,5 +197,10 @@
         private System.Windows.Forms.Label lblSupplier;
         private System.Windows.Forms.Label lblClass;
         private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.Label lblNoOrder;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnSubmit;
     }
 }

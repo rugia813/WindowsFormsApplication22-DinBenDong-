@@ -178,7 +178,7 @@
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form_supplier";
-            this.Text = "Form_supplier";
+            this.Text = "廠商/菜單資料編輯系統";
             this.Load += new System.EventHandler(this.Form_supplier_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
