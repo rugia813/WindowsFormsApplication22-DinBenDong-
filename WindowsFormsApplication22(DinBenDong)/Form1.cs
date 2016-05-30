@@ -11,8 +11,22 @@ using System.Data.SqlClient;
 
 namespace WindowsFormsApplication22_DinBenDong_
 {
+    
     public partial class Form1 : Form
     {
+        protected override void WndProc(ref Message m)  //make the form draggable
+        {
+            switch (m.Msg)
+            {
+                case 0x84:
+                    base.WndProc(ref m);
+                    if ((int)m.Result == 0x1)
+                        m.Result = (IntPtr)0x2;
+                    return;
+            }
+
+            base.WndProc(ref m);
+        }
         bool skipLogin = false;  //Skip login
 
         String sqlCon = @"Data Source=(LocalDB)\MSSQLLocalDB;" +
@@ -32,6 +46,15 @@ namespace WindowsFormsApplication22_DinBenDong_
         public Form1()
         {
             InitializeComponent();
+
+            this.BackColor = ColorScheme.background;
+            cbbClass.BackColor = ColorScheme.secondary;
+            cbbName.BackColor = ColorScheme.secondary;
+            btnLogin.BackColor = ColorScheme.main;
+            btnReceptionLogin.BackColor = ColorScheme.main;
+            btnX.BackColor = ColorScheme.main;
+            btnX.FlatAppearance.BorderColor = ColorScheme.main;
+            lblTitle.BackColor = ColorScheme.main;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -85,8 +108,8 @@ namespace WindowsFormsApplication22_DinBenDong_
         private void btnLogin_Click(object sender, EventArgs e)
         {
             if (cbbClass.SelectedIndex<0 || cbbName.SelectedIndex<0)
-            {
-                MessageBox.Show("Choose a name"); return;
+            {                
+                RmsgBox.Show("請選擇姓名", "錯誤"); return;
             }
             loginName = studentItems[cbbName.SelectedIndex].name;
             studentNumber = studentItems[cbbName.SelectedIndex].number;
@@ -96,7 +119,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             Boolean ifOnDuty = false;
             if (ckb_onDuty.Checked) ifOnDuty = true;
 
-            MessageBox.Show(string.Format("ID: {3}, 姓名: {0}, 座號: {1}, 班級: {2}", loginName, studentNumber, class_name, id), "登入成功", MessageBoxButtons.OK, MessageBoxIcon.None);
+            //MessageBox.Show(string.Format("ID: {3}, 姓名: {0}, 座號: {1}, 班級: {2}", loginName, studentNumber, class_name, id), "登入成功", MessageBoxButtons.OK, MessageBoxIcon.None);
             Form_main form = new Form_main(this, id, loginName, studentNumber, class_name, class_id, ifOnDuty);
 
             //hide form1 and show form_main
@@ -171,5 +194,17 @@ namespace WindowsFormsApplication22_DinBenDong_
             Form_order_detail form = new Form_order_detail(sqlCon, 0);
             form.ShowDialog(this);
         }
+
+        private void btnX_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+    }
+    public static class ColorScheme
+    {
+        public static Color main = Color.MediumAquamarine;
+        public static Color secondary = Color.LightGray;
+        public static Color background = Color.GhostWhite;
+
     }
 }

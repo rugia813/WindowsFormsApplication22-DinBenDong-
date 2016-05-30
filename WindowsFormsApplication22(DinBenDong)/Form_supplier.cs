@@ -33,6 +33,17 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             InitializeComponent();
             this.sqlCon = sqlCon;
+
+            this.BackColor = ColorScheme.background;
+            btnSave.BackColor = ColorScheme.main;
+            btnAddSup.BackColor = ColorScheme.main;
+            btnDeleteSup.BackColor = ColorScheme.secondary;
+            coverUpNumBtn.BackColor = ColorScheme.secondary;
+            panel1.BackColor = ColorScheme.secondary;
+            btnX.BackColor = ColorScheme.main;
+            btnX.FlatAppearance.BorderColor = ColorScheme.main;
+            lblTitle.BackColor = ColorScheme.main;
+            cbbSuppliers.BackColor = ColorScheme.secondary;
         }
 
         private void Form_supplier_Load(object sender, EventArgs e)
@@ -139,7 +150,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             DaSupplier.Fill(DsSupplier, "supplier");
             DasupItem.Fill(DsSupplier, "supplier_items");
 
-            MessageBox.Show(this, "已儲存變更", "儲存");
+            RmsgBox.Show("已儲存變更", "儲存");
         }
 
         private void cbbSuppliers_SelectedIndexChanged(object sender, EventArgs e)
@@ -211,9 +222,10 @@ namespace WindowsFormsApplication22_DinBenDong_
             btnAdd.Location = new Point(24, 14 + panel1.Controls.Count/2 * 40);
             btnAdd.Text = "更多";
             btnAdd.Size = new Size(110, 25);
-            btnAdd.BackColor = default(Color);
-            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Font = new Font("微軟正黑體", 10);
+            btnAdd.BackColor = ColorScheme.main;
             btnAdd.Click += btnAdd_Click;
+            btnAdd.FlatStyle = FlatStyle.Flat;
             panel1.Controls.Add(btnAdd);
         }
         private void buildColumns(int numRow)
@@ -278,9 +290,10 @@ namespace WindowsFormsApplication22_DinBenDong_
             btnAdd.Location = new Point(24, 14 + panel1.Controls.Count / 2 * 40);
             btnAdd.Text = "更多";
             btnAdd.Size = new Size(110, 25);
-            btnAdd.BackColor = default(Color);
-            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Font = new Font("微軟正黑體", 10);
+            btnAdd.BackColor = ColorScheme.main;
             btnAdd.Click += btnAdd_Click;
+            btnAdd.FlatStyle = FlatStyle.Flat;
             panel1.Controls.Add(btnAdd);
 
             panel1.ScrollControlIntoView(btnAdd);//pan to add button
@@ -313,7 +326,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this, "廠商名稱不可重複", "錯誤");
+                    RmsgBox.Show("廠商名稱不可重複", "錯誤");
                 }
             }
         }
@@ -324,7 +337,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             try {
                 string supplierName = cbbSuppliers.SelectedItem.ToString();
-                DialogResult dr = MessageBox.Show("是否要刪除廠商: " + supplierName + "?", "確認刪除", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult dr = RmsgBox.Show("是否要刪除廠商: " + supplierName + "?", "確認刪除", MessageBoxButtons.OKCancel);
                 if (dr == DialogResult.Yes)
                 {
                     SqlConnection con = new SqlConnection(sqlCon);
@@ -348,12 +361,25 @@ namespace WindowsFormsApplication22_DinBenDong_
                     }
                     cbbSuppliers.SelectedIndex = 0;
 
-                    MessageBox.Show("已刪除廠商: " + supplierName, "成功");
+                    RmsgBox.Show("已刪除廠商: " + supplierName, "成功");
                 }
             }catch(Exception ex)
             {
                 Console.WriteLine(ex);
             }
+        }
+        protected override void WndProc(ref Message m)  //make the form draggable
+        {
+            switch (m.Msg)
+            {
+                case 0x84:
+                    base.WndProc(ref m);
+                    if ((int)m.Result == 0x1)
+                        m.Result = (IntPtr)0x2;
+                    return;
+            }
+
+            base.WndProc(ref m);
         }
     }
 }

@@ -36,11 +36,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.lblTotal = new System.Windows.Forms.Label();
             this.lblSupplier = new System.Windows.Forms.Label();
             this.lblClass = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnSubmit = new System.Windows.Forms.Button();
+            this.btnX = new System.Windows.Forms.Button();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -84,7 +86,7 @@
             // 
             // lblNoOrder
             // 
-            this.lblNoOrder.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.lblNoOrder.BackColor = System.Drawing.SystemColors.MenuBar;
             this.lblNoOrder.Font = new System.Drawing.Font("微軟正黑體", 16F);
             this.lblNoOrder.Location = new System.Drawing.Point(353, 338);
             this.lblNoOrder.Name = "lblNoOrder";
@@ -105,7 +107,7 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.MenuBar;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(136, 106);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(577, 592);
@@ -125,6 +127,17 @@
             this.tabPage2.Size = new System.Drawing.Size(848, 709);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Class";
+            // 
+            // btnSubmit
+            // 
+            this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubmit.Location = new System.Drawing.Point(523, 653);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(207, 39);
+            this.btnSubmit.TabIndex = 2;
+            this.btnSubmit.Text = "訂單確認";
+            this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
             // lblTotal
             // 
@@ -159,24 +172,44 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnSubmit
+            // btnX
             // 
-            this.btnSubmit.Location = new System.Drawing.Point(523, 653);
-            this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(207, 39);
-            this.btnSubmit.TabIndex = 2;
-            this.btnSubmit.Text = "訂單確認";
-            this.btnSubmit.UseVisualStyleBackColor = true;
-            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            this.btnX.BackColor = System.Drawing.Color.Green;
+            this.btnX.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnX.FlatAppearance.BorderColor = System.Drawing.Color.Green;
+            this.btnX.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnX.Font = new System.Drawing.Font("微軟正黑體", 16F);
+            this.btnX.Location = new System.Drawing.Point(824, -4);
+            this.btnX.Margin = new System.Windows.Forms.Padding(0);
+            this.btnX.Name = "btnX";
+            this.btnX.Size = new System.Drawing.Size(38, 35);
+            this.btnX.TabIndex = 8;
+            this.btnX.Text = "×";
+            this.btnX.UseVisualStyleBackColor = false;
+            this.btnX.Click += new System.EventHandler(this.btnX_Click);
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Location = new System.Drawing.Point(2, 5);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(278, 20);
+            this.lblTitle.TabIndex = 9;
+            this.lblTitle.Text = "訂單確認  ||  DinBenDong 訂便當系統";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Form_order_detail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.OliveDrab;
+            this.BackColor = System.Drawing.Color.Ivory;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(862, 788);
+            this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.btnX);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form_order_detail";
             this.Text = "訂單檢視";
@@ -185,6 +218,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -202,5 +236,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.Button btnX;
+        private System.Windows.Forms.Label lblTitle;
     }
 }

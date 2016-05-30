@@ -23,7 +23,9 @@ namespace WindowsFormsApplication22_DinBenDong_
             Button confirmation = new Button() { Text = "Ok", Left = 20, Width = 80, Top = 80 };
             Button cancel = new Button() { Text = "cancel", Left = 140, Width = 80, Top = 80 };
             confirmation.Click += (sender, e) => { result = inputBox.Text; prompt.Close(); };
+            confirmation.FlatStyle = FlatStyle.Flat;
             cancel.Click += (sender, e) => { result = ""; prompt.Close(); };
+            cancel.FlatStyle = FlatStyle.Flat;
             prompt.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             prompt.StartPosition = FormStartPosition.CenterParent;
             prompt.Controls.Add(confirmation);

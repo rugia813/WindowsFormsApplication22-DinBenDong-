@@ -33,7 +33,17 @@ namespace WindowsFormsApplication22_DinBenDong_
         public Form_student(String sqlCon)
         {
             InitializeComponent();
-            this.sqlCon = sqlCon;            
+            this.sqlCon = sqlCon;
+
+            this.BackColor = ColorScheme.background;
+            btnSave.BackColor = ColorScheme.main;
+            panel1.BackColor = ColorScheme.secondary;
+            btnAddClass.BackColor = ColorScheme.main;
+            btnDeleteClass.BackColor = ColorScheme.secondary;
+            cbbClass.BackColor = ColorScheme.secondary;
+            btnX.BackColor = ColorScheme.main;
+            btnX.FlatAppearance.BorderColor = ColorScheme.main;
+            lblTitle.BackColor = ColorScheme.main;
         }
 
         private void Form_student_Load(object sender, EventArgs e)
@@ -132,11 +142,12 @@ namespace WindowsFormsApplication22_DinBenDong_
 
             Button btnAdd = new Button();
             btnAdd.Location = new Point(21 + (max / 10 + 1) * 260, 15);
+            btnAdd.Size = new Size(100, 25);
             btnAdd.Text = "更多";
-            btnAdd.Size = new Size(110, 25);
-            btnAdd.BackColor = default(Color);
-            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Font = new Font("微軟正黑體", 10);
+            btnAdd.BackColor = ColorScheme.main;
             btnAdd.Click += btnAdd_Click;
+            btnAdd.FlatStyle = FlatStyle.Flat;
             panel1.Controls.Add(btnAdd);            
         }
 
@@ -161,12 +172,13 @@ namespace WindowsFormsApplication22_DinBenDong_
 
             Button btnAdd = new Button();
             btnAdd.Location = new Point(21 + ((panelControlsCount / 10) + 1) * 260, 15);
-            btnAdd.Size = new Size(110, 25);
+            btnAdd.Size = new Size(100, 25);
             btnAdd.Name = "btnAdd";
             btnAdd.Text = "更多";
-            btnAdd.BackColor = default(Color);
-            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Font = new Font("微軟正黑體", 10);
+            btnAdd.BackColor = ColorScheme.main;
             btnAdd.Click += btnAdd_Click;
+            btnAdd.FlatStyle = FlatStyle.Flat;
             panel1.Controls.Add(btnAdd);
 
             buildColumns(panelControlsCount + 10);
@@ -286,7 +298,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             DaStudent.Fill(DsLunch, "student");
             DaClass.Fill(DsLunch, "class");
 
-            MessageBox.Show(this, "已儲存變更", "儲存");
+            RmsgBox.Show("已儲存變更", "儲存");
         }
 
         //Add new class
@@ -314,7 +326,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                     cbbClass.SelectedIndex = cbbClass.Items.Count-1;
                 }catch(Exception ex)
                 {
-                    MessageBox.Show(this,"班級名稱不可重複", "錯誤");
+                    RmsgBox.Show("班級名稱不可重複", "錯誤");
                 }
             }           
         }
@@ -323,7 +335,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         private void btnDeleteClass_Click(object sender, EventArgs e)
         {
             string className = cbbClass.SelectedItem.ToString();
-            DialogResult dr = MessageBox.Show("是否要刪除班級: " + className + "?", "確認刪除", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult dr = RmsgBox.Show("是否要刪除班級: " + className + "?", "確認刪除", MessageBoxButtons.OKCancel);
             if (dr == DialogResult.Yes)
             {
                 SqlConnection con = new SqlConnection(sqlCon);
@@ -347,8 +359,26 @@ namespace WindowsFormsApplication22_DinBenDong_
                 }
                 cbbClass.SelectedIndex = 0;
 
-                MessageBox.Show("已刪除班級: " + className, "成功");
+                RmsgBox.Show("已刪除班級: " + className, "成功");
             }            
+        }
+
+        private void btnX_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        protected override void WndProc(ref Message m)  //make the form draggable
+        {
+            switch (m.Msg)
+            {
+                case 0x84:
+                    base.WndProc(ref m);
+                    if ((int)m.Result == 0x1)
+                        m.Result = (IntPtr)0x2;
+                    return;
+            }
+
+            base.WndProc(ref m);
         }
     }
 }

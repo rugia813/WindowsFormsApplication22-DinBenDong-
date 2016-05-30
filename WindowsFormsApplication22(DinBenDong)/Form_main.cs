@@ -52,13 +52,16 @@ namespace WindowsFormsApplication22_DinBenDong_
             student_id = stu_id;
             this.class_id = class_id;
             ifOnDuty = ifod;
+            lblTitle.BackColor = ColorScheme.main;
+            btnX.BackColor = ColorScheme.main;
+            btnX.FlatAppearance.BorderColor = ColorScheme.main;
         }
 
         private void Form_main_Load(object sender, EventArgs e)
         {   
             //Total Price Label
             lblTotal.Name = "lblTotal";
-            lblTotal.Location = new Point(232, 480);
+            lblTotal.Location = new Point(242, 510);
             lblTotal.AutoSize = false;
             lblTotal.TextAlign = ContentAlignment.MiddleCenter;
             lblTotal.Size = new Size(210, 29);
@@ -249,7 +252,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                     }
                     if (i == supplierItems[supplierItems.Count-1])
                     {
-                        MessageBox.Show("並未選取任何物品", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        RmsgBox.Show("並未選取任何物品", "錯誤");
                         return;
                     }
                 }
@@ -265,7 +268,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                         output += supItem.btn.Text + " x " + supItem.tb.Text + "\n\n";
                     }
                 }
-                MessageBox.Show(output, "下訂成功");
+                RmsgBox.Show(output, "下訂成功");
 
                 SqlConnection con = new SqlConnection(sqlCon);
                 con.Open();
@@ -306,6 +309,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             else //Already ordered, use to cancel order
             {
                 panel1.Controls.Clear();
+                supplierItems.Clear();
                 lblTotal.Visible = false;
                 ifOrdered = false;
                 showItems();
@@ -320,7 +324,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 cmd.ExecuteNonQuery();
 
                 //delete orders
-                strSQL = "delete from orders where stu_id in (select stu_id from student where stu_id = @stu_id)";
+                strSQL = "delete from orders where stu_id = @stu_id";
                 cmd = new SqlCommand(strSQL, con);
                 cmd.Parameters.AddWithValue("@stu_id", student_id);
                 cmd.ExecuteNonQuery();                
@@ -353,12 +357,13 @@ namespace WindowsFormsApplication22_DinBenDong_
                     catch(Exception ex)
                     {
                         Console.WriteLine(ex);
-                        MessageBox.Show("請選擇供應商", "錯誤");
+                        RmsgBox.Show("請選擇供應商", "錯誤");
                     }
                 }
                 else//Change Sup
-                {                 
-                    DialogResult dr = MessageBox.Show("是否更改供應商? 已下定訂單將被刪除", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                {
+                    //DialogResult dr = MessageBox.Show("是否更改供應商? 已下定訂單將被刪除", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    DialogResult dr = RmsgBox.Show("是否更改供應商? 已下定訂單將被刪除", "警告", MessageBoxButtons.OKCancel);
                     if (dr == DialogResult.OK)
                     {
                         ifOrdered = false;
@@ -480,8 +485,8 @@ namespace WindowsFormsApplication22_DinBenDong_
                 btn.Size = new Size(160, 30);
                 btn.MouseUp += item_name_right_Click;
                 btnDishes.Add(btn);
-                btn.BackColor = default(Color);
-                btn.UseVisualStyleBackColor = true;
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.BackColor = ColorScheme.main;
                 panel1.Controls.Add(btn);
 
                 Label lbl = new Label();
@@ -628,6 +633,24 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             Form_order_detail form = new Form_order_detail(sqlCon, class_id);
             form.ShowDialog(this);
+        }
+        protected override void WndProc(ref Message m)  //make the form draggable
+        {
+            switch (m.Msg)
+            {
+                case 0x84:
+                    base.WndProc(ref m);
+                    if ((int)m.Result == 0x1)
+                        m.Result = (IntPtr)0x2;
+                    return;
+            }
+
+            base.WndProc(ref m);
+        }
+
+        private void btnX_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

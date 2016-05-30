@@ -27,6 +27,16 @@ namespace WindowsFormsApplication22_DinBenDong_
             InitializeComponent();
             this.sqlCon = sqlCon;
             this.class_id = class_id;
+
+            this.BackColor = ColorScheme.main;
+            tabControl1.TabPages[0].BackColor = ColorScheme.secondary;
+            tabControl1.TabPages[1].BackColor = ColorScheme.background;
+            flowLayoutPanel1.BackColor = ColorScheme.background;
+            treeView1.BackColor = ColorScheme.secondary;
+            btnSubmit.BackColor = ColorScheme.main;
+            btnX.BackColor = ColorScheme.main;
+            btnX.FlatAppearance.BorderColor = ColorScheme.main;
+            lblTitle.BackColor = ColorScheme.main;
         }
 
         private void Form_order_detail_Load(object sender, EventArgs e)
@@ -161,8 +171,9 @@ namespace WindowsFormsApplication22_DinBenDong_
                             orderItem.Size = new Size(flowLayoutPanel1.Width/2-10, 200);
                             orderItem.TextAlign = ContentAlignment.MiddleCenter;
                             orderItem.Text = (string)reader["name"];
-                            orderItem.BackColor = Color.Wheat;
+                            orderItem.BackColor = ColorScheme.main;
                             orderItem.Click += OrderItem_Click;
+                            orderItem.FlatStyle = FlatStyle.Flat;
                             flowLayoutPanel1.Controls.Add(orderItem);
                         }
                    
@@ -184,10 +195,10 @@ namespace WindowsFormsApplication22_DinBenDong_
             Button btn = (Button)sender;
 
             TabPage page = new TabPage(btn.Text);
-            page.BackColor = Color.OliveDrab;
+            page.BackColor = ColorScheme.secondary;
 
             TreeView tree = new TreeView();
-            tree.BackColor = System.Drawing.Color.DarkOliveGreen;
+            tree.BackColor = ColorScheme.background;
             tree.Font = new System.Drawing.Font("微軟正黑體", 16F);
             tree.HotTracking = true;
             tree.ItemHeight = 26;
@@ -203,7 +214,9 @@ namespace WindowsFormsApplication22_DinBenDong_
             btnDestroy.Size = new System.Drawing.Size(207, 39);
             btnDestroy.Text = "訂單完成";
             btnDestroy.UseVisualStyleBackColor = true;
+            btnDestroy.BackColor = ColorScheme.main;
             btnDestroy.Click += BtnDestroy_Click;
+            btnDestroy.FlatStyle = FlatStyle.Flat;
             page.Controls.Add(btnDestroy);
 
             #region treeView data
@@ -289,7 +302,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         private void BtnDestroy_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            DialogResult dr = MessageBox.Show("確認訂單是否已下訂完成?/n按下\"確定\"此訂單將被刪除！", "警告", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            DialogResult dr = RmsgBox.Show("確認訂單是否已下訂完成?\n按下\"確定\"此訂單將被刪除！", "警告", MessageBoxButtons.OKCancel);
             if (dr == DialogResult.OK)
             {
                 tabControl1.TabPages.Remove(tabControl1.SelectedTab);
@@ -357,6 +370,25 @@ namespace WindowsFormsApplication22_DinBenDong_
                 reader.Close();
                 con.Close();
             }
+        }
+
+        private void btnX_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        protected override void WndProc(ref Message m)  //make the form draggable
+        {
+            switch (m.Msg)
+            {
+                case 0x84:
+                    base.WndProc(ref m);
+                    if ((int)m.Result == 0x1)
+                        m.Result = (IntPtr)0x2;
+                    return;
+            }
+
+            base.WndProc(ref m);
         }
     }
 }
