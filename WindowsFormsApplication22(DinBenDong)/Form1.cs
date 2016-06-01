@@ -193,7 +193,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         //Reception Login
         private void button1_Click(object sender, EventArgs e)
         {
-            string pwd = Prompt.ShowDialog("請輸入密碼", "登入");
+            string pwd = Prompt.ShowDialog("請輸入密碼", "登入", true);
             if (pwd == password)
             {
                 Form_order_detail form = new Form_order_detail(sqlCon, 0);

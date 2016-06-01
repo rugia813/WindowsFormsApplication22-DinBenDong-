@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,7 +22,7 @@ namespace WindowsFormsApplication22_DinBenDong_
     @"User Instance=False;";
         int class_id = 1; // 0 = reception
         HashSet<int> orders = new HashSet<int>();
-
+        
         public Form_order_detail(String sqlCon, int class_id)
         {
             InitializeComponent();
@@ -168,13 +169,16 @@ namespace WindowsFormsApplication22_DinBenDong_
                             lblNoOrder.Visible = false;
                             Button orderItem = new Button();
                             orderItem.Name = reader["class_id"].ToString();
-                            orderItem.Size = new Size(flowLayoutPanel1.Width/2-10, 200);
+                            orderItem.Size = new Size(flowLayoutPanel1.Width/3-10, 150);
                             orderItem.TextAlign = ContentAlignment.MiddleCenter;
                             orderItem.Text = (string)reader["name"];
                             orderItem.BackColor = ColorScheme.main;
                             orderItem.Click += OrderItem_Click;
                             orderItem.FlatStyle = FlatStyle.Flat;
                             flowLayoutPanel1.Controls.Add(orderItem);
+                            notifyIcon1.Icon = this.Icon;
+                            notifyIcon1.ShowBalloonTip(7000, "新訂單", (string)reader["name"] + "訂單已收到!", ToolTipIcon.Info);
+                            FlashWindow(this.Handle, true);
                         }
                    
                     }
@@ -189,7 +193,10 @@ namespace WindowsFormsApplication22_DinBenDong_
                 con.Close();
             }
         }
-
+        //blink taskbar button
+        [DllImport("user32.dll")]
+        static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
+            
         private void OrderItem_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
@@ -389,6 +396,11 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
 
             base.WndProc(ref m);
+        }
+
+        private void Form_order_detail_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            notifyIcon1.Dispose();
         }
     }
 }

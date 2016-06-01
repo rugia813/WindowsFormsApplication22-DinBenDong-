@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnLogin = new System.Windows.Forms.Button();
@@ -59,7 +60,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(62, 113);
+            this.label2.Location = new System.Drawing.Point(63, 127);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 20);
             this.label2.TabIndex = 2;
@@ -69,7 +70,7 @@
             // 
             this.btnLogin.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLogin.Location = new System.Drawing.Point(66, 199);
+            this.btnLogin.Location = new System.Drawing.Point(67, 213);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(179, 38);
             this.btnLogin.TabIndex = 3;
@@ -84,7 +85,7 @@
             this.ckb_onDuty.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.ckb_onDuty.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ckb_onDuty.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ckb_onDuty.Location = new System.Drawing.Point(94, 159);
+            this.ckb_onDuty.Location = new System.Drawing.Point(95, 173);
             this.ckb_onDuty.Name = "ckb_onDuty";
             this.ckb_onDuty.Size = new System.Drawing.Size(73, 24);
             this.ckb_onDuty.TabIndex = 4;
@@ -94,7 +95,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(62, 63);
+            this.label3.Location = new System.Drawing.Point(63, 77);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 20);
             this.label3.TabIndex = 2;
@@ -106,7 +107,7 @@
             this.cbbClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbClass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbbClass.FormattingEnabled = true;
-            this.cbbClass.Location = new System.Drawing.Point(113, 60);
+            this.cbbClass.Location = new System.Drawing.Point(114, 74);
             this.cbbClass.Name = "cbbClass";
             this.cbbClass.Size = new System.Drawing.Size(121, 28);
             this.cbbClass.TabIndex = 5;
@@ -118,7 +119,7 @@
             this.cbbName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbbName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbbName.FormattingEnabled = true;
-            this.cbbName.Location = new System.Drawing.Point(113, 110);
+            this.cbbName.Location = new System.Drawing.Point(114, 124);
             this.cbbName.Name = "cbbName";
             this.cbbName.Size = new System.Drawing.Size(121, 28);
             this.cbbName.TabIndex = 5;
@@ -127,7 +128,7 @@
             // 
             this.btnReceptionLogin.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnReceptionLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReceptionLogin.Location = new System.Drawing.Point(51, 153);
+            this.btnReceptionLogin.Location = new System.Drawing.Point(58, 153);
             this.btnReceptionLogin.Name = "btnReceptionLogin";
             this.btnReceptionLogin.Size = new System.Drawing.Size(179, 40);
             this.btnReceptionLogin.TabIndex = 6;
@@ -182,7 +183,7 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("微軟正黑體", 20F, System.Drawing.FontStyle.Bold);
-            this.label5.Location = new System.Drawing.Point(90, 10);
+            this.label5.Location = new System.Drawing.Point(91, 24);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(123, 35);
             this.label5.TabIndex = 8;
@@ -204,7 +205,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("微軟正黑體", 20F, System.Drawing.FontStyle.Bold);
-            this.label4.Location = new System.Drawing.Point(79, 85);
+            this.label4.Location = new System.Drawing.Point(86, 85);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(123, 35);
             this.label4.TabIndex = 8;
@@ -226,6 +227,7 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

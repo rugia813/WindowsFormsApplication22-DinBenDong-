@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_order_detail));
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -43,6 +44,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnX = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -65,7 +67,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(2, 46);
+            this.tabControl1.Location = new System.Drawing.Point(3, 43);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(856, 742);
@@ -198,6 +200,15 @@
             this.lblTitle.Text = "訂單確認  ||  DinBenDong 訂便當系統";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "hgfhf";
+            this.notifyIcon1.BalloonTipTitle = "hfgh";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "新訂單";
+            this.notifyIcon1.Visible = true;
+            // 
             // Form_order_detail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -210,9 +221,11 @@
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form_order_detail";
             this.Text = "訂單檢視";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_order_detail_FormClosed);
             this.Load += new System.EventHandler(this.Form_order_detail_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -238,5 +251,6 @@
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Button btnX;
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }

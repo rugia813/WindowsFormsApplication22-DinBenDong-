@@ -123,6 +123,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "MsgBox";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "test";
             this.panel1.ResumeLayout(false);

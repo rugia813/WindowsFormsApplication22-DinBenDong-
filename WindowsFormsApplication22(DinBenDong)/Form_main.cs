@@ -58,7 +58,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         }
 
         private void Form_main_Load(object sender, EventArgs e)
-        {   
+        {
             //Total Price Label
             lblTotal.Name = "lblTotal";
             lblTotal.Location = new Point(242, 510);
@@ -185,7 +185,8 @@ namespace WindowsFormsApplication22_DinBenDong_
                     con.Close();
                 }
                 else
-                {            
+                {
+                    btnClassOrderDetail.Visible = false;         
                     lblTodaySup.Visible = true;
                     lblTodaySup.Text += todaySup;
                     cbbChooseSup.Visible = false;
@@ -487,6 +488,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 btnDishes.Add(btn);
                 btn.FlatStyle = FlatStyle.Flat;
                 btn.BackColor = ColorScheme.main;
+                toolTip1.SetToolTip(btn, "點擊滑鼠左鍵 + 1、滑鼠右鍵 - 1");
                 panel1.Controls.Add(btn);
 
                 Label lbl = new Label();

@@ -9,10 +9,11 @@ namespace WindowsFormsApplication22_DinBenDong_
 {
     public static class Prompt
     {
-        public static string ShowDialog(string text, string caption)
+        public static string ShowDialog(string text, string caption, bool ifPwd)
         {
             string result = "";
             Form prompt = new Form();
+            prompt.ShowInTaskbar = false;
             prompt.Width = 240;
             prompt.Height = 150;
             prompt.Text = caption;
@@ -25,6 +26,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             textLabel.Size = new System.Drawing.Size(160, 25);
             textLabel.BackColor = ColorScheme.background;
             TextBox inputBox = new TextBox() { Left = 20, Top = 60, Width = 200 };
+            if (ifPwd)inputBox.UseSystemPasswordChar = true;
             inputBox.Font = new System.Drawing.Font("微軟正黑體", 16);
             Button confirmation = new Button() { Text = "Ok", Left = 20, Width = 80, Top = 105 };
             Button cancel = new Button() { Text = "cancel", Left = 140, Width = 80, Top = 105 };
@@ -43,6 +45,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             prompt.Controls.Add(cancel);
             prompt.Controls.Add(inputBox);
             prompt.ShowDialog();
+            inputBox.Select();
             return result;
         }
     }

@@ -302,7 +302,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         //Add Snew supplier
         private void btnAddSup_Click(object sender, EventArgs e)
         {
-            string promptValue = Prompt.ShowDialog("請輸入廠商的名稱:", "建立新廠商");
+            string promptValue = Prompt.ShowDialog("請輸入廠商的名稱:", "建立新廠商",false);
             if (promptValue != "")
             {
                 try

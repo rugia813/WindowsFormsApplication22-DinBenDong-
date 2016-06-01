@@ -304,7 +304,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         //Add new class
         private void btnAddClass_Click(object sender, EventArgs e)
         {
-            string promptValue = Prompt.ShowDialog("請輸入新班級的名稱:", "建立新班級");
+            string promptValue = Prompt.ShowDialog("請輸入新班級的名稱:", "建立新班級",false);
             if (promptValue != "")
             {
                 try {
