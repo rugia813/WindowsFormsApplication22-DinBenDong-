@@ -72,7 +72,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                     }
 
                     //Get All the Type of Items Ordered and Create Root Node
-                    conText = "select i.item_name, sum(i.price) as price from orders o join order_detail od on o.order_id = od.order_id " +
+                    conText = "select i.item_name, sum(i.price) as price, sum(od.qty) as qty from orders o join order_detail od on o.order_id = od.order_id " +
                                          "join supplier_items i on i.item_id = od.item_id where o.stu_id in (select stu_id from student where class_id = @class_id) " +
                                          "group by i.item_name";
                     cmd = new SqlCommand(conText, con);
@@ -84,14 +84,14 @@ namespace WindowsFormsApplication22_DinBenDong_
                     {
                         treeView1.Nodes.Add((string)reader["item_name"]); // + "-------------------($" + reader["price"] + ") ");
                         itemTypes.Add((string)reader["item_name"]);
-                        priceTotal += (int)reader["price"];
+                        priceTotal += (int)reader["price"] * (int)reader["qty"];
                     }
                     lblTotal.Text += "$ " + priceTotal;
 
                     //Get Names and Prices of Each Type and Create Sub Nodes
                     foreach (TreeNode n in treeView1.Nodes)
                     {
-                        conText = "select s.name, i.item_name, i.price from student s join class c on s.class_id = c.class_id " +
+                        conText = "select s.name, i.item_name, i.price, od.qty from student s join class c on s.class_id = c.class_id " +
                                          "join orders o on o.stu_id = s.stu_id join order_detail od on o.order_id = od.order_id " +
                                          "join supplier_items i on i.item_id = od.item_id " +
                                          "where c.class_id = @class_id and i.item_name = @item_name";
@@ -101,7 +101,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                         reader = cmd.ExecuteReader();
                         while (reader.Read())
                         {
-                            n.Nodes.Add((string)reader["name"] + "(" + (string)reader["item_name"] + ")  $" + reader["price"]);
+                            n.Nodes.Add((string)reader["name"] + "(" + (string)reader["item_name"] + " x " + reader["qty"].ToString() + ") $ " + ((int)reader["price"] * (int)reader["qty"]).ToString());
                         }
                         treeView1.ExpandAll();
 
@@ -179,6 +179,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                             notifyIcon1.Icon = this.Icon;
                             notifyIcon1.ShowBalloonTip(7000, "新訂單", (string)reader["name"] + "訂單已收到!", ToolTipIcon.Info);
                             FlashWindow(this.Handle, true);
+                            this.Activate();
                         }
                    
                     }
@@ -196,7 +197,8 @@ namespace WindowsFormsApplication22_DinBenDong_
         //blink taskbar button
         [DllImport("user32.dll")]
         static extern bool FlashWindow(IntPtr hwnd, bool bInvert);
-            
+        public const UInt32 FLASHW_TIMERNOFG = 12;
+
         private void OrderItem_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
@@ -272,7 +274,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 }
 
                 //Get All the Type of Items Ordered and Create Root Node
-                conText = "select i.item_name, sum(od.qty) as qty, sum(i.price) as price from orders o join order_detail od on o.order_id = od.order_id " +
+                conText = "select i.item_name, sum(od.qty) as qty, sum(i.price) as price, sum(i.price * od.qty) as subTotal from orders o join order_detail od on o.order_id = od.order_id " +
                                      "join supplier_items i on i.item_id = od.item_id where o.stu_id in (select stu_id from student where class_id = @class_id) " +
                                      "group by i.item_name";
                 cmd = new SqlCommand(conText, con);
@@ -282,11 +284,32 @@ namespace WindowsFormsApplication22_DinBenDong_
                 List<String> itemTypes = new List<string>();
                 while (reader.Read())
                 {
-                    tree.Nodes.Add((string)reader["item_name"] + " x " + reader["qty"] + "-------------------($" + reader["price"] + ") ");
+                    tree.Nodes.Add((string)reader["item_name"] + " x " + reader["qty"] + "-------------------($" + (int)reader["subTotal"] + ") ");
                     itemTypes.Add((string)reader["item_name"]);
-                    priceTotal += (int)reader["price"];
+                    priceTotal += (int)reader["subTotal"];
                 }
                 lblT.Text += "$ " + priceTotal;
+
+                //Get Names and Prices of Each Type and Create Sub Nodes
+                int i = 0;
+                foreach (TreeNode n in tree.Nodes)
+                {
+                    conText = "select s.name, i.item_name, i.price, od.qty from student s join class c on s.class_id = c.class_id " +
+                                     "join orders o on o.stu_id = s.stu_id join order_detail od on o.order_id = od.order_id " +
+                                     "join supplier_items i on i.item_id = od.item_id " +
+                                     "where c.class_id = @class_id and i.item_name = @item_name";
+                    cmd = new SqlCommand(conText, con);
+                    cmd.Parameters.AddWithValue("@class_id", btn.Name);
+                    cmd.Parameters.AddWithValue("@item_name", itemTypes[i]);
+                    reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        TreeNode node = new TreeNode((string)reader["name"] + "(" + (string)reader["item_name"] + " x " + reader["qty"].ToString() + ") $ " + ((int)reader["price"] * (int)reader["qty"]).ToString());
+                        node.ForeColor = Color.Gray;
+                        n.Nodes.Add(node);
+                    }
+                    i++;
+                }
             }
             catch (Exception ex)
             {

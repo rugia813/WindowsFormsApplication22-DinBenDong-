@@ -261,6 +261,27 @@ namespace WindowsFormsApplication22_DinBenDong_
 
                 int orderID;
 
+                //Check if TodaySup changed
+                SqlConnection con = new SqlConnection(sqlCon);
+                con.Open();
+                string strSQL = "select todaySupplier from class where class_id = @class_id";
+                SqlCommand cmd = new SqlCommand(strSQL, con);
+                cmd = new SqlCommand(strSQL, con);
+                cmd.Parameters.AddWithValue("@class_id", class_id);
+                String todaySupNew = (string)cmd.ExecuteScalar();
+                if (todaySupNew != todaySup) //today sup is different from the data in database
+                {
+                    RmsgBox.Show("值日生已更換今日供應商，請重新下訂","錯誤");
+                    todaySup = todaySupNew;
+                    lblTodaySup.Text = "今天的供應商: " + todaySupNew;
+                    panel1.Controls.Clear();
+                    supplierItems.Clear();
+                    lblTotal.Visible = false;
+                    ifOrdered = false;
+                    showItems();
+                    return;
+                }
+
                 string output = "您的訂單為:\n\n";
                 foreach (supplier_item supItem in supplierItems)
                 {
@@ -271,12 +292,11 @@ namespace WindowsFormsApplication22_DinBenDong_
                 }
                 RmsgBox.Show(output, "下訂成功");
 
-                SqlConnection con = new SqlConnection(sqlCon);
-                con.Open();
+                
 
                 //create order master
-                string strSQL = "insert into orders values(@stu_id)";
-                SqlCommand cmd = new SqlCommand(strSQL, con);
+                strSQL = "insert into orders values(@stu_id)";
+                cmd = new SqlCommand(strSQL, con);
                 cmd = new SqlCommand(strSQL, con);
                 cmd.Parameters.AddWithValue("@stu_id", student_id);
                 cmd.ExecuteNonQuery();

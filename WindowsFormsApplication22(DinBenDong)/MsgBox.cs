@@ -50,7 +50,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             this.btnConfirm.Click += (sender, e) => { result = DialogResult.OK; this.Close(); };
             btnCancel.Visible = false;
 
-            strech = text.Split(new char[] { '\n' }).Count() * 10;
+            strech = text.Split(new char[] { '\n' }).Count() * 16;
             this.Height += strech;
             btnCancel.Location = new Point(btnCancel.Location.X, btnCancel.Location.Y + strech);
             btnConfirm.Location = new Point(btnConfirm.Location.X, btnConfirm.Location.Y + strech);
