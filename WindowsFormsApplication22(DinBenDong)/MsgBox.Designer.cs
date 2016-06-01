@@ -66,7 +66,7 @@
             // lblText
             // 
             this.lblText.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblText.Location = new System.Drawing.Point(1, 32);
+            this.lblText.Location = new System.Drawing.Point(1, 55);
             this.lblText.Name = "lblText";
             this.lblText.Size = new System.Drawing.Size(367, 74);
             this.lblText.TabIndex = 2;

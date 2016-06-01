@@ -39,6 +39,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         int studentNumber;
         string class_name;
         string class_id;
+        string password = "1234";
 
         SqlConnectionStringBuilder scsb;
         List<class_item> classItems = new List<class_item> {};
@@ -189,10 +190,19 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
         }
 
+        //Reception Login
         private void button1_Click(object sender, EventArgs e)
         {
-            Form_order_detail form = new Form_order_detail(sqlCon, 0);
-            form.ShowDialog(this);
+            string pwd = Prompt.ShowDialog("請輸入密碼", "登入");
+            if (pwd == password)
+            {
+                Form_order_detail form = new Form_order_detail(sqlCon, 0);
+                form.ShowDialog(this);
+            }
+            else
+            {
+                RmsgBox.Show("密碼錯誤!", "錯誤");
+            }            
         }
 
         private void btnX_Click(object sender, EventArgs e)
