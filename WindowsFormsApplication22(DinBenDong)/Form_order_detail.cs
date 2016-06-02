@@ -50,13 +50,15 @@ namespace WindowsFormsApplication22_DinBenDong_
                 #region reception
                 tabControl1.TabPages.RemoveAt(1);
                 timer1.Start();
-
+                loadClsHis();
+                loadClsHisDetail();
                 #endregion
             }
             else //Class
             {
                 #region class
                 tabControl1.TabPages.RemoveAt(0);
+                tabControl1.TabPages.RemoveAt(1);
                 try
                 {
                     //Supplier & Class Label
@@ -70,9 +72,9 @@ namespace WindowsFormsApplication22_DinBenDong_
                         lblClass.Text += (string)reader["name"];
                         tabControl1.TabPages[0].Text = (string)reader["name"];
                     }
-
+                    reader.Close();
                     //Get All the Type of Items Ordered and Create Root Node
-                    conText = "select i.item_name, sum(i.price) as price, sum(od.qty) as qty from orders o join order_detail od on o.order_id = od.order_id " +
+                    conText = "select i.item_name, sum(i.price) as price, sum(od.qty) as qty, sum(i.price*od.qty) as total from orders o join order_detail od on o.order_id = od.order_id " +
                                          "join supplier_items i on i.item_id = od.item_id where o.stu_id in (select stu_id from student where class_id = @class_id) " +
                                          "group by i.item_name";
                     cmd = new SqlCommand(conText, con);
@@ -84,10 +86,10 @@ namespace WindowsFormsApplication22_DinBenDong_
                     {
                         treeView1.Nodes.Add((string)reader["item_name"]); // + "-------------------($" + reader["price"] + ") ");
                         itemTypes.Add((string)reader["item_name"]);
-                        priceTotal += (int)reader["price"] * (int)reader["qty"];
+                        priceTotal += (int)reader["total"];
                     }
                     lblTotal.Text += "$ " + priceTotal;
-
+                    reader.Close();
                     //Get Names and Prices of Each Type and Create Sub Nodes
                     foreach (TreeNode n in treeView1.Nodes)
                     {
@@ -104,7 +106,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                             n.Nodes.Add((string)reader["name"] + "(" + (string)reader["item_name"] + " x " + reader["qty"].ToString() + ") $ " + ((int)reader["price"] * (int)reader["qty"]).ToString());
                         }
                         treeView1.ExpandAll();
-
+                        reader.Close();
                         //Hide sumbit button if already submitted
                         conText = "select submit from class where class_id = @class_id";
                         cmd = new SqlCommand(conText, con);
@@ -127,6 +129,72 @@ namespace WindowsFormsApplication22_DinBenDong_
                 }
                 #endregion
             }            
+        }        
+
+        private void loadClsHis()
+        {
+            lbClass.Items.Clear();
+            try {
+                SqlConnection con = new SqlConnection(sqlCon);
+                con.Open();
+                String conText = "select distinct class_name from history";
+                SqlCommand cmd = new SqlCommand(conText, con);
+                SqlDataReader reader = cmd.ExecuteReader();
+                
+                    while (reader.Read())
+                    {
+                        lbClass.Items.Add((string)reader["class_name"]);
+                    }
+                    
+                reader.Close();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }           
+        }
+
+        private void loadClsHisDetail()
+        {
+            treeHisDetail.Nodes.Clear();
+            try
+            {
+                //load root nodes as dates
+                SqlConnection con = new SqlConnection(sqlCon);
+                con.Open();
+                String conText = "select distinct order_date from history where class_name = @class_name";
+                SqlCommand cmd = new SqlCommand(conText, con);
+                cmd.Parameters.AddWithValue("@class_name", lbClass.SelectedItem.ToString());
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                    {
+                        treeHisDetail.Nodes.Add(reader["order_date"].ToString());
+                    }
+                reader.Close();
+
+                //load sub nodes as order detail
+                foreach (TreeNode node in treeHisDetail.Nodes)
+                {
+                    con = new SqlConnection(sqlCon);
+                    con.Open();
+                    conText = "select hd.* from history_detail hd join history h on h.history_id = hd.history_id where h.class_name = @class_name and h.order_date = @order_date";
+                    cmd = new SqlCommand(conText, con);
+                    cmd.Parameters.AddWithValue("@class_name", lbClass.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@order_date", node.Text);
+                    reader = cmd.ExecuteReader();
+                    
+                        while (reader.Read())
+                        {
+                            node.Nodes.Add((string)reader["stu_name"] + " (" + (string)reader["item_name"] +" $"+ reader["price"] +(") x ")+ reader["qty"]);
+                        }
+                        
+                }                
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         //make treeView item red and crossedout
@@ -190,8 +258,8 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
             finally
             {
-                reader.Close();
-                con.Close();
+                if(reader != null)reader.Close();
+                if(con != null)con.Close();
             }
         }
         //blink taskbar button
@@ -272,7 +340,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                     page.Controls.Add(lblT);
                     page.Controls.Add(lblTel);
                 }
-
+                reader.Close();
                 //Get All the Type of Items Ordered and Create Root Node
                 conText = "select i.item_name, sum(od.qty) as qty, sum(i.price) as price, sum(i.price * od.qty) as subTotal from orders o join order_detail od on o.order_id = od.order_id " +
                                      "join supplier_items i on i.item_id = od.item_id where o.stu_id in (select stu_id from student where class_id = @class_id) " +
@@ -289,7 +357,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                     priceTotal += (int)reader["subTotal"];
                 }
                 lblT.Text += "$ " + priceTotal;
-
+                reader.Close();
                 //Get Names and Prices of Each Type and Create Sub Nodes
                 int i = 0;
                 foreach (TreeNode n in tree.Nodes)
@@ -309,6 +377,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                         n.Nodes.Add(node);
                     }
                     i++;
+                    reader.Close();
                 }
             }
             catch (Exception ex)
@@ -332,19 +401,39 @@ namespace WindowsFormsApplication22_DinBenDong_
         private void BtnDestroy_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            DialogResult dr = RmsgBox.Show("確認訂單是否已下訂完成?\n按下\"確定\"此訂單將被刪除！", "警告", MessageBoxButtons.OKCancel);
+            DialogResult dr = RmsgBox.Show("訂單是否已下訂完成?", "警告", MessageBoxButtons.OKCancel);
             if (dr == DialogResult.OK)
-            {
-                tabControl1.TabPages.Remove(tabControl1.SelectedTab);
-
+            {                
                 SqlConnection con = new SqlConnection(sqlCon);
                 con.Open();
                 SqlDataReader reader = null;
                 try
                 {
-                    //delete order details
-                    string strSQL = "delete from order_detail where order_id in (select order_id from orders where stu_id in (select stu_id from student where class_id = @class_id))";
+                    //create new history
+                    string strSQL = "insert into history values(@class_name, CONVERT(VARCHAR(19),GETDATE(), 110))";
                     SqlCommand cmd = new SqlCommand(strSQL, con);
+                    cmd.Parameters.AddWithValue("@class_name", tabControl1.SelectedTab.Text);
+                    cmd.ExecuteNonQuery();
+
+                    //get history id
+                    int history_id;
+                    strSQL = "select Max(history_id) from history where class_name = @class_name";
+                    cmd = new SqlCommand(strSQL, con);
+                    cmd.Parameters.AddWithValue("@class_name", tabControl1.SelectedTab.Text);
+                    history_id = (int)cmd.ExecuteScalar();
+
+                    //create history details
+                    strSQL = "insert into history_detail select @history, s.name, i.item_name, i.price, od.qty from student s join class c on s.class_id = c.class_id " +
+                              "join orders o on o.stu_id = s.stu_id join order_detail od on o.order_id = od.order_id " +
+                              "join supplier_items i on i.item_id = od.item_id where c.class_id = @class_id";
+                    cmd = new SqlCommand(strSQL, con);
+                    cmd.Parameters.AddWithValue("@class_id", btn.Name);
+                    cmd.Parameters.AddWithValue("@history", history_id);
+                    cmd.ExecuteNonQuery();
+
+                    //delete order details
+                    strSQL = "delete from order_detail where order_id in (select order_id from orders where stu_id in (select stu_id from student where class_id = @class_id))";
+                    cmd = new SqlCommand(strSQL, con);
                     cmd.Parameters.AddWithValue("@class_id", btn.Name);
                     cmd.ExecuteNonQuery();
 
@@ -359,6 +448,9 @@ namespace WindowsFormsApplication22_DinBenDong_
                     cmd = new SqlCommand(strSQL, con);
                     cmd.Parameters.AddWithValue("@class_id", btn.Name);
                     cmd.ExecuteNonQuery();
+
+                    tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+                    loadClsHis();
                 }
                 catch (Exception ex)
                 {
@@ -402,6 +494,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             }
         }
 
+        #region etc
         private void btnX_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -424,6 +517,12 @@ namespace WindowsFormsApplication22_DinBenDong_
         private void Form_order_detail_FormClosed(object sender, FormClosedEventArgs e)
         {
             notifyIcon1.Dispose();
+        }
+        #endregion
+
+        private void lbClass_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadClsHisDetail();
         }
     }
 }

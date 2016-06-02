@@ -84,54 +84,39 @@ namespace WindowsFormsApplication22_DinBenDong_
         //switching classes
         private void cbbClass_SelectedIndexChanged(object sender, EventArgs e)
         {
+            loadClassPage();
+        }
+
+        private void loadClassPage()
+        {
+            Console.WriteLine("load class page");
             panel1.Controls.Clear();
             studentItems.Clear();
             tempStuId = new List<int>();
             tempStuName = new List<string>();
 
-            //SqlConnection con = new SqlConnection(sqlCon);
             try
-            {                
+            {
                 classID = (int)DsLunch.Tables["class"].Select("name = '" + cbbClass.SelectedItem.ToString() + "'").First()["class_id"];
-                //Console.WriteLine("class id = " + classID);
+
                 foreach (DataRow row in DsLunch.Tables["student"].Select("class_id = '" + classID + "'"))
                 {
                     tempStuId.Add((int)row["number"]);
                     tempStuName.Add((string)row["name"]);
-                    //Console.WriteLine((int)row["number"] + " " + (string)row["name"]);
                 }
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-            /*
-            con.Open();
-            SqlCommand cmd = new SqlCommand("select * from student s join class c on s.class_id = c.class_id where c.name = @name", con);
-            cmd.Parameters.AddWithValue("@name", cbbClass.SelectedItem.ToString());
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                try
-                {
-                    tempStuId.Add((int)reader["number"]);
-                    tempStuName.Add((string)reader["name"]);
-                    //studentItems[(int)reader["number"]-1].name.Text = (string)reader["name"];
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            }
-            reader.Close();
-            con.Close();
-            */
+
             int max = 0;
             if (tempStuId.Count > 0)
             {
                 max = tempStuId.Max();
             }
-            buildColumns((max/10+1)*10);
+            buildColumns((max / 10 + 1) * 10);
             if (tempStuId.Count > 0)
             {
                 for (int i = 0; i < tempStuId.Count; i++)
@@ -148,7 +133,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             btnAdd.BackColor = ColorScheme.main;
             btnAdd.Click += btnAdd_Click;
             btnAdd.FlatStyle = FlatStyle.Flat;
-            panel1.Controls.Add(btnAdd);            
+            panel1.Controls.Add(btnAdd);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -285,12 +270,11 @@ namespace WindowsFormsApplication22_DinBenDong_
                             reader.Close();
                         }
                     }
-                    
-                }catch(Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
                 }
-                
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }                
                 i++;
             }
             con.Close();
@@ -299,6 +283,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             DaClass.Fill(DsLunch, "class");
 
             RmsgBox.Show("已儲存變更", "儲存");
+            loadClassPage();
         }
 
         //Add new class
@@ -336,7 +321,7 @@ namespace WindowsFormsApplication22_DinBenDong_
         {
             string className = cbbClass.SelectedItem.ToString();
             DialogResult dr = RmsgBox.Show("是否要刪除班級: " + className + "?", "確認刪除", MessageBoxButtons.OKCancel);
-            if (dr == DialogResult.Yes)
+            if (dr == DialogResult.OK)
             {
                 SqlConnection con = new SqlConnection(sqlCon);
                 con.Open();
@@ -360,7 +345,7 @@ namespace WindowsFormsApplication22_DinBenDong_
                 cbbClass.SelectedIndex = 0;
 
                 RmsgBox.Show("已刪除班級: " + className, "成功");
-            }            
+            }
         }
 
         private void btnX_Click(object sender, EventArgs e)

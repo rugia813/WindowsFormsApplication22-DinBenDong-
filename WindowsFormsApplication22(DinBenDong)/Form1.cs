@@ -74,7 +74,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;
 
-            //sqlCon = scsb.ToString(); // comment this out when not in III
+            sqlCon = scsb.ToString(); // comment this out when not in III
 
             SqlConnection con = new SqlConnection(sqlCon);
             con.Open();
@@ -214,7 +214,7 @@ namespace WindowsFormsApplication22_DinBenDong_
     {
         public static Color main = Color.MediumAquamarine;
         public static Color secondary = Color.LightGray;
-        public static Color background = Color.GhostWhite;
+        public static Color background = Color.White;
 
     }
 }

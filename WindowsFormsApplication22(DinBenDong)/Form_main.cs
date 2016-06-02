@@ -77,7 +77,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             scsb.InitialCatalog = "Lunch";
             scsb.IntegratedSecurity = true;    
 
-            //sqlCon = scsb.ToString(); //should comment this out when not in III
+            sqlCon = scsb.ToString(); //should comment this out when not in III
 
             #region//See if today's supplier chosen yet
             SqlConnection con = new SqlConnection(sqlCon);
@@ -218,9 +218,9 @@ namespace WindowsFormsApplication22_DinBenDong_
                 //get name and price of each items of this supplier, and make button(name) and Label(price) on panel1
                 SqlConnection con = new SqlConnection(sqlCon);
                 con.Open();
-                string strSQL = "select item_name, price, item_id from supplier_items where sup_id = @sup_id";
+                string strSQL = "select si.item_name, si.price, si.item_id from supplier_items si join supplier s on si.sup_id = s.sup_id where s.name = @sup_name";
                 SqlCommand cmd = new SqlCommand(strSQL, con);
-                cmd.Parameters.AddWithValue("@sup_id", cbbChooseSup.SelectedIndex + 1);
+                cmd.Parameters.AddWithValue("@sup_name", cbbChooseSup.SelectedItem.ToString());
                 SqlDataReader reader = cmd.ExecuteReader();
                 //var items = new[] { new { Name = "", Price = 0 } };
                 while (reader.HasRows)

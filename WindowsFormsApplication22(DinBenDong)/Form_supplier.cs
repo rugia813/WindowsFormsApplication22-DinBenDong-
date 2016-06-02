@@ -151,10 +151,17 @@ namespace WindowsFormsApplication22_DinBenDong_
             DasupItem.Fill(DsSupplier, "supplier_items");
 
             RmsgBox.Show("已儲存變更", "儲存");
+            loadSupItemPage();
         }
 
         private void cbbSuppliers_SelectedIndexChanged(object sender, EventArgs e)
         {
+            loadSupItemPage();
+        }
+
+        private void loadSupItemPage()
+        {
+            Console.WriteLine("load sup item page");
             panel1.Controls.Clear();
             supplierItems.Clear();
             tbTel.Text = "";
@@ -167,12 +174,12 @@ namespace WindowsFormsApplication22_DinBenDong_
             string supName = s;
             for (int i = 0; i < s.Length; i++)
             {
-                if (s[i]==0x0027)// 0x0027 = '
+                if (s[i] == 0x0027)// 0x0027 = '
                 {
                     for (int o = 0; o < s.Length; o++)
                     {
-                        r+= s[o];
-                        if (o==i)
+                        r += s[o];
+                        if (o == i)
                         {
                             r += "'";
                         }
@@ -194,7 +201,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             {
                 MessageBox.Show(ex.ToString());
             }
-           
+
             int max = 0;
             if (tempItemPrice.Count > 0)
             {
@@ -216,10 +223,10 @@ namespace WindowsFormsApplication22_DinBenDong_
             catch (Exception)
             {
                 Console.WriteLine("Tel is empty");
-            }          
+            }
 
             Button btnAdd = new Button();
-            btnAdd.Location = new Point(24, 14 + panel1.Controls.Count/2 * 40);
+            btnAdd.Location = new Point(24, 14 + panel1.Controls.Count / 2 * 40);
             btnAdd.Text = "更多";
             btnAdd.Size = new Size(110, 25);
             btnAdd.Font = new Font("微軟正黑體", 10);
@@ -228,6 +235,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             btnAdd.FlatStyle = FlatStyle.Flat;
             panel1.Controls.Add(btnAdd);
         }
+
         private void buildColumns(int numRow)
         {
             for (int i = 0; i < numRow; i++)
@@ -279,12 +287,12 @@ namespace WindowsFormsApplication22_DinBenDong_
             int panelControlsCount = panel1.Controls.Count / 2;//how many buttons
             panel1.Controls.Clear();
             supplierItems.Clear();
-
+            
             buildColumns(panelControlsCount + 3);
             for (int i = 0; i < tempPrice.Count; i++)
             {
-                supplierItems[i].name.Text = tempItemName[i];
-                supplierItems[i].price.Text = tempItemPrice[i];
+                supplierItems[i].name.Text = tempName[i];
+                supplierItems[i].price.Text = tempPrice[i];
             }
             Button btnAdd = new Button();
             btnAdd.Location = new Point(24, 14 + panel1.Controls.Count / 2 * 40);
@@ -338,7 +346,7 @@ namespace WindowsFormsApplication22_DinBenDong_
             try {
                 string supplierName = cbbSuppliers.SelectedItem.ToString();
                 DialogResult dr = RmsgBox.Show("是否要刪除廠商: " + supplierName + "?", "確認刪除", MessageBoxButtons.OKCancel);
-                if (dr == DialogResult.Yes)
+                if (dr == DialogResult.OK)
                 {
                     SqlConnection con = new SqlConnection(sqlCon);
                     con.Open();

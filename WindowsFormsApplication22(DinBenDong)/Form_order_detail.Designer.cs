@@ -45,9 +45,14 @@
             this.btnX = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lbClass = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.treeHisDetail = new System.Windows.Forms.TreeView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView1
@@ -67,6 +72,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(3, 43);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -209,6 +215,44 @@
             this.notifyIcon1.Text = "新訂單";
             this.notifyIcon1.Visible = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.BackColor = System.Drawing.Color.LightGray;
+            this.tabPage3.Controls.Add(this.treeHisDetail);
+            this.tabPage3.Controls.Add(this.label2);
+            this.tabPage3.Controls.Add(this.lbClass);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(848, 709);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "歷史紀錄";
+            // 
+            // lbClass
+            // 
+            this.lbClass.FormattingEnabled = true;
+            this.lbClass.ItemHeight = 20;
+            this.lbClass.Location = new System.Drawing.Point(37, 61);
+            this.lbClass.Name = "lbClass";
+            this.lbClass.Size = new System.Drawing.Size(206, 564);
+            this.lbClass.TabIndex = 0;
+            this.lbClass.SelectedIndexChanged += new System.EventHandler(this.lbClass_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(33, 35);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 20);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "班級";
+            // 
+            // treeHisDetail
+            // 
+            this.treeHisDetail.Location = new System.Drawing.Point(265, 61);
+            this.treeHisDetail.Name = "treeHisDetail";
+            this.treeHisDetail.Size = new System.Drawing.Size(552, 563);
+            this.treeHisDetail.TabIndex = 2;
+            // 
             // Form_order_detail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -230,6 +274,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,5 +298,9 @@
         private System.Windows.Forms.Button btnX;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TreeView treeHisDetail;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListBox lbClass;
     }
 }
