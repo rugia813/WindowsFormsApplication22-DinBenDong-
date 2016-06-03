@@ -49,6 +49,7 @@
             this.lbClass = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.treeHisDetail = new System.Windows.Forms.TreeView();
+            this.lblGrandtotal = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -125,6 +126,7 @@
             // 
             this.tabPage2.BackColor = System.Drawing.Color.YellowGreen;
             this.tabPage2.Controls.Add(this.btnSubmit);
+            this.tabPage2.Controls.Add(this.lblGrandtotal);
             this.tabPage2.Controls.Add(this.lblTotal);
             this.tabPage2.Controls.Add(this.lblSupplier);
             this.tabPage2.Controls.Add(this.lblClass);
@@ -152,7 +154,7 @@
             this.lblTotal.Font = new System.Drawing.Font("微軟正黑體", 16F);
             this.lblTotal.Location = new System.Drawing.Point(121, 654);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(313, 39);
+            this.lblTotal.Size = new System.Drawing.Size(163, 39);
             this.lblTotal.TabIndex = 1;
             this.lblTotal.Text = "總額: ";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -253,6 +255,16 @@
             this.treeHisDetail.Size = new System.Drawing.Size(552, 563);
             this.treeHisDetail.TabIndex = 2;
             // 
+            // lblGrandtotal
+            // 
+            this.lblGrandtotal.Font = new System.Drawing.Font("微軟正黑體", 16F);
+            this.lblGrandtotal.Location = new System.Drawing.Point(290, 654);
+            this.lblGrandtotal.Name = "lblGrandtotal";
+            this.lblGrandtotal.Size = new System.Drawing.Size(163, 39);
+            this.lblGrandtotal.TabIndex = 1;
+            this.lblGrandtotal.Text = "總量: ";
+            this.lblGrandtotal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Form_order_detail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -302,5 +314,6 @@
         private System.Windows.Forms.TreeView treeHisDetail;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lbClass;
+        private System.Windows.Forms.Label lblGrandtotal;
     }
 }
